@@ -38,7 +38,5 @@ Untuk terminal `backend` ikuti langkah berikut:
 ```
   npm run start
 ```
-
-
-
-###
+## Note
+- Project ini masih dalam pengembangan, setiap kali ada update jalankan perintah `git pull` di terminal agar dapat mengupdate kode.
