@@ -63,10 +63,10 @@ const LoginUser = () => {
           
           <div className="grid justify-center ">
             <div className="text-[36px] font-bold flex pt-[50px]">
-              <div>Log in to your account</div>
+              <div>Log in Menuju Akun Anda</div>
             </div>
             <div className="">
-              <div>Welcome! Please fill the form to log in</div>
+              <div>Selamat Datang! Silahkan Isi Anda</div>
             </div>
           </div>
           <div className="pt-[34px] flex justify-center">

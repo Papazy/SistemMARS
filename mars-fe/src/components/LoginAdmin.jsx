@@ -75,7 +75,7 @@ const LoginAdmin = () => {
             <div>Log in as Admin</div>
           </div>
           <div className="">
-            <div>Welcome! Please fill the form to log in</div>
+            <div>Selamat Datang! Silahkan Isi Data Anda</div>
           </div>
         </div>
         <div className="pt-[34px] flex justify-center">
