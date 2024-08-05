@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 31 Jul 2024 pada 15.35
+-- Waktu pembuatan: 05 Agu 2024 pada 13.16
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -80,14 +80,8 @@ CREATE TABLE `kedatangan` (
 --
 
 INSERT INTO `kedatangan` (`id`, `nama_agen_kapal`, `perusahaan_agen_kapal`, `imo_number`, `nama_kapal`, `kebangsaan_kapal`, `data_cru_indonesia`, `data_cru_asing`, `pelabuhan_asal`, `pelabuhan_tujuan`, `service_location`, `jadwal_kedatangan`, `tujuan_kedatangan`, `dokument`) VALUES
-(31, 'tes', 't', 0, 't', 't', 0, 0, 't', 't', 'Kantor Imigrasi Kelas II TPI Lhokseumawe', '2024-07-27', 'Medical Evacuation', 'dokument-1722020626351.pdf'),
-(33, '', '', 0, '', '', 0, 0, '', '', '', '0000-00-00', '', ''),
-(34, '', '', 0, '', '', 0, 0, '', '', '', '0000-00-00', '', ''),
-(35, '', '', 0, '', '', 0, 0, '', '', '', '0000-00-00', '', ''),
-(36, '', '', 0, '', '', 0, 0, '', '', '', '0000-00-00', '', ''),
-(37, '', '', 0, '', '', 0, 0, '', '', '', '0000-00-00', '', ''),
-(38, '', '', 0, '', '', 0, 0, '', '', '', '0000-00-00', '', ''),
-(39, '', '', 0, '', '', 0, 0, '', '', '', '0000-00-00', '', '');
+(41, 'Fajry Ariansyah', 'Halteks Studio', 192323, 'Titanic', 'Indonesia', 0, 0, 'Lhokseumawe', 'Banda Aceh', 'Kantor Imigrasi Kelas II TPI Lhokseumawe', '2024-12-31', 'Medical Evacuation', 'dokument-1722528845355.pdf'),
+(42, 'Fajry Ariansyah', 'Halteks Studio', 192323, 'Titanic', 'Indonesia', 0, 0, 'Lhokseumawe', 'Banda Aceh', 'Kantor Imigrasi Kelas II TPI Lhokseumawe', '2024-12-31', 'Medical Evacuation', 'dokument-1722528845355.pdf');
 
 -- --------------------------------------------------------
 
@@ -144,6 +138,7 @@ INSERT INTO `request_register` (`username`, `password`, `id_agen_kapal`, `nama_p
 ('abdila', '123', '12', 'ssd', 'sdfs', 29993, 'fdg'),
 ('as', 'qwe', 'zdsw', 'ee', 'eew', 203, 'wew'),
 ('fajry', '123', 'fajry', 'fajry', 'fajry@gmail.com', 822, 'fajry'),
+('Fajry Ariansyah', 'fajry', '12345', 'Halteks Studio', 'fajry@gmail.com', 2147483647, 'Banda Aceh'),
 ('gibran', '1111111', 'GIB1', 'PT Aman', 'amansentosa@gmail.com', 88822212, 'Banda Aceh No.1'),
 ('jamal1', 'password', '101525AB', 'PT. Barito ', 'barito@gmail.com', 2147483647, 'Kalimantan Selatan'),
 ('te', 'tew', 'tes', 'tes', 'tes@gmail.com', 0, 'ste'),
@@ -271,7 +266,7 @@ ALTER TABLE `keberangkatan`
 -- AUTO_INCREMENT untuk tabel `kedatangan`
 --
 ALTER TABLE `kedatangan`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT untuk tabel `notifications`

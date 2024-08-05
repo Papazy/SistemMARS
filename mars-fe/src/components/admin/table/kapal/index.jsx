@@ -222,6 +222,26 @@ const columns = {
         header: <span className="flex justify-center items-center text-center w-full">Dokument</span>,
         size: 200+50,
       }),
+      columnHelper.accessor("status", {
+        header: <span className="flex justify-center items-center text-center w-full">Status</span>,
+        size: 300,
+        id: "status",
+        cell: ({ row }) => (
+          <div className="flex justify-center items-center w-full gap-2">
+            <button className="bg-green-500 text-white px-2 py-1 rounded w-24 flex justify-center items-center gap-1"
+              onClick={() => {setIsOpenModalEdit(true); setRowId(row.original.id)}}
+            >
+                Setuju <BsCheck />
+            </button>
+            <button className="bg-red-800 text-white px-2 py-1 rounded w-24 flex justify-center items-center gap-1"
+              onClick={() => {setIsOpenModalEdit(true); setRowId(row.original.id)}}
+            >
+                Tolak <BsX />
+            </button>
+           
+          </div>
+        ),
+      }),
       columnHelper.accessor("id", {
         header: <span className="flex justify-center items-center text-center w-full">Action</span>,
         size:300,
