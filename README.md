@@ -15,7 +15,7 @@ adalah platform digital terpadu yang dirancang untuk memperlancar proses evakuas
 - [*Cloning Project*] Klon projek ini dengan menjalankan perintah berikut
 
 ```
-  git clone git@github.com:Papazy/SistemMARS.git
+  git clone https://github.com/Papazy/SistemMARS.git
 ```
 
 - [*Setup Database*] Bila menggunakan *phpmyadmin*, buat database `mars-project`, lalu import schemanya `mars_project.sql`
