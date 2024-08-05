@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const TestApi = () => {
-  const url = "http://localhost:3001/api/history";
+  const url = "http://localhost:3001/api/kru/off";
   const urlLogin = "http://localhost:3001/api/loginMars";
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);

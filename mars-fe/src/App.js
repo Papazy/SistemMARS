@@ -35,7 +35,7 @@ function App() {
   const adminRoutes = [
     {
       path: "/admin",
-      element: <TableKapal/>
+      element: <div>Visual data</div>,
     },
     {
       path: "/admin/pengguna",

@@ -228,7 +228,7 @@ app.get("/api/kapal/:type", verifyToken, async (req, res) => {
         res.status(500).send({ message: err.message })
     }
 })
-
+/
 //Create data kapal Berangkat
 //Create Data Kapal Datang
 app.post('/api/createBerangkatKapal', verifyToken, upload.single("dokument"), (req, res) => {
@@ -322,6 +322,10 @@ app.get('/api/SignOnCru', (req, res) => {
         }
     })
 });
+
+
+
+
 
 // create Sign Off Crew
 app.post('/api/createSignOffCru', verifyToken, upload.single("dokument"), (req, res) => {
@@ -559,13 +563,7 @@ app.put("/api/kapal/:tipe/:id", verifyToken, upload.single("dokument"),(req, res
     const id = req.params.id;
     const tipe = req.params.tipe;
   
-    console.log(req.body.nama_agen_kapal);
-    console.log(req.body.perusahaan_agen_kapal);
-    console.log(req.body.imo_number);
-    console.log(req.body.nama_kapal);
-    console.log(req.body.kebangsaan_kapal);
-    console.log(req.body.data_cru_indonesia);
-    console.log(req.body.data_cru_asing);
+
     if(req.body.nama_agen_kapal === undefined){
         console.log("tidak ada data");
         return res.status(500).send({ message: "Error update data" })
@@ -824,6 +822,37 @@ app.get("/api/kapal/:tipe/:id", (req, res) => {
             }
         }
     })
+})
+app.get('/api/kru/:tipe',(req,res) =>{
+    const {tipe} = req.params
+    
+    const page = parseInt(req.query.page) || 0;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = page*limit;
+    let table = "sign_on"
+    if(tipe === "off"){
+        table = "sign_off"
+    }
+    let sqlQuery = `SELECT COUNT(*) FROM ${table}`;
+    let totalPage = 0;
+    db.query(sqlQuery, (err, result) => {
+        if(err){
+            res.status(500).send({ error: err.message });
+        }else{
+            totalPage = Math.ceil(result[0]['COUNT(*)']/limit);
+            
+        }
+    })
+
+
+    if(tipe === 'off'){
+        sqlQuery = 'SELECT * FROM sign_off'
+    }
+    try{
+        res.status(200).send({ message: "success", });
+    }catch(err){
+        res.status(500).send({ error: err.message });
+    }
 })
 
 
