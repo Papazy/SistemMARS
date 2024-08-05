@@ -26,7 +26,7 @@ const LoginAdmin = () => {
       try{
         await loginAdmin(username, password)
         setIsShowModal(true)
-        window.location.href = "/request-register"
+        window.location.href = "/admin"
       }catch(e){
         console.log(e)
         setIsShowModalError(true)

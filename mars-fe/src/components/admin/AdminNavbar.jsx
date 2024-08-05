@@ -5,9 +5,9 @@ const AdminNavbar = () => {
   return (
     <>
       <div className="flex justify-between items-center px-20 py-6 border z-100 fixed w-screen bg-white h-20">
-        <div className="logo flex items-center">
+        <a href="/" className="logo flex items-center">
           <img src={logofix} alt="logo" style={{width:'90px'}}/>
-        </div>
+        </a>
         <div className="">Admin</div>
       </div>
     </>
