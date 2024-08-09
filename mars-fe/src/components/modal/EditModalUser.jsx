@@ -2,7 +2,7 @@ import { useAuth } from "../../auth/AuthContext";
 import { useEffect, useState } from "react";
 import { downloadDokument } from "../../config/utils";
 
-const EditModal = ({tipe = "datang", isOpen, setIsOpen, rowId, onEditSuccess }) => {
+const EditModalUser = ({tipe = "datang", isOpen, setIsOpen, rowId, onEditSuccess }) => {
 
   const [nama_agen_kapal, setNamaAgenKapal] = useState("");
   const [perusahaan_agen_kapal, setPerusahaanAgenKapal] = useState("");
@@ -409,4 +409,4 @@ const EditModal = ({tipe = "datang", isOpen, setIsOpen, rowId, onEditSuccess }) 
   );
 };
 
-export default EditModal;
+export default EditModalUser;

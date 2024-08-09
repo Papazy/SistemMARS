@@ -6,6 +6,8 @@ import {
 } from "@tanstack/react-table";
 import { useAuth } from "../../../../auth/AuthContext";
 import Table from "../Table";
+import DeleteModal from "../../../modal/DeleteModal";
+import EditModal from "../../../modal/EditModal";
 
 const TablePengguna = () => {
 
@@ -17,6 +19,11 @@ const TablePengguna = () => {
   const [rowId, setRowId] = useState(0);
   const { token } = useAuth();
 
+
+  const [reloadData, setReloadData] = useState(false);
+  const handleActionSuccess = () => {
+    setReloadData(!reloadData);
+  }
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
@@ -112,7 +119,7 @@ const columns = {
       }
     };
     fetchData();
-  }, [token, pagination]);
+  }, [token, pagination, reloadData]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -120,6 +127,8 @@ const columns = {
 
   return (
     <div className="p-5 w-full flex flex-col gap-5">
+       {isOpenModalDelete !== null && <DeleteModal isOpen={isOpenModalDelete} setIsOpen={setIsOpenModalDelete} rowId={rowId} onDeleteSuccess={handleActionSuccess}/>}
+       {isOpenModalEdit && <EditModalUser isOpen={isOpenModalEdit} setIsOpen={setIsOpenModalEdit} rowId={rowId} onEditSuccess={handleActionSuccess} />}
       
     <div className="text-lg font-bold flex justify-center items-center ">
       Data Pengguna
