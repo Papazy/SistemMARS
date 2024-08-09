@@ -28,6 +28,8 @@ import ProfileTable from "./components/ProfileTable";
 import AdminLayout from "./components/admin/AdminLayout";
 import Table from "./components/admin/table/Table";
 import TableKapal from "./components/admin/table/kapal";
+import TableKru from "./components/admin/table/kru";
+import TablePengguna from "./components/admin/table/user";
 
 function App() {
   document.title = "MARS";
@@ -35,11 +37,11 @@ function App() {
   const adminRoutes = [
     {
       path: "/admin",
-      element: <div>Visual data</div>,
+      element: <TablePengguna/>,
     },
     {
       path: "/admin/pengguna",
-      element: <div>User</div>
+      element: <TablePengguna/>
     },
     {
       path: "/admin/keberangkatan",
@@ -51,11 +53,11 @@ function App() {
     },
     {
       path: "/admin/sign-on",
-      element: <AdmCruSignOn/>
+      element: <TableKru tipe="sign_on"/>
     },
     {
       path: "/admin/sign-off",
-      element: <AdmCruSignOff/>
+      element: <TableKru tipe="sign_off"/>
     }
   ]
   
@@ -94,27 +96,6 @@ function App() {
           <Route 
             path="/request-register" 
             element={<ProtectedRouteAdmin element={<ReqReg/>} />} />
-          <Route
-            path="/admin-cru-sign-off"
-            element={<ProtectedRouteAdmin element={<AdmCruSignOff />} />}
-          />
-          <Route
-            path="/admin-cru-sign-on"
-            element={<ProtectedRouteAdmin element={<AdmCruSignOn />} />}
-          />
-          <Route
-            path="/admin-data-keb"
-            element={<ProtectedRouteAdmin element={<AdmDataKeb />} />}
-          />
-          <Route
-            path="/admin/pengguna"
-            element={<ProtectedRouteAdmin element={<AdminLayout element={<div>User</div>} />} />}
-          />
-          <Route
-            path="/admin/adm"
-            element={<ProtectedRouteAdmin element={<AdminLayout element={<div>Administrasi</div>} />} />}
-          />
-
           <Route path="/test-api" element={<TestApi/>} />
           <Route path="/test" element={<AdminLayout/>} />
           

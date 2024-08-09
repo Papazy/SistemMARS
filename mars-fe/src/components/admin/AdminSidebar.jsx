@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Email from "../../assets/icons/email";
 import Phone from "../../assets/icons/phone";
+import { useAuth } from "../../auth/AuthContext";
 
 const Menu = ({name, active}) => {
   return (
@@ -14,7 +15,14 @@ const formatFirstLetter = (string) => {
 }
 
 const AdminSidebar = ({active}) => {
-  
+  const {logout} = useAuth();
+
+  const handleLogout = async(e) => {
+    e.preventDefault();
+    await logout();
+    window.location.href = "/";
+  }
+
   return (
     <>
       <div className="flex flex-col justify-between h-screen fixed pt-24 pb-10 border w-64 px-4 bg-[#1A719C]">
@@ -31,7 +39,7 @@ const AdminSidebar = ({active}) => {
           <Link to="/admin/adm" className={`px-3 py-2 rounded-xl ${active!=="pengguna" ? 'bg-[#124f6d]' : ''}`}>Administrasi</Link> */}
         </div>
         <div className="bawah flex flex-col justify-center items-center gap-5">
-    <button className=" px-4 py-2 bg-[#d1171f] rounded text-white">Logout</button>
+    <button className=" px-4 py-2 bg-[#d1171f] rounded text-white" onClick={(e) => handleLogout(e)}>Logout</button>
           <div className="bg-[#05e3eb] rounded px-2 py-3 text-[#0d394e]">
             Informasi Lebih Lanjut
             <div className="flex items-center gap-2 text-sm">

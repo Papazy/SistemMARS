@@ -830,31 +830,84 @@ app.get('/api/kru/:tipe',(req,res) =>{
     const limit = parseInt(req.query.limit) || 10;
     const offset = page*limit;
     let table = "sign_on"
-    if(tipe === "off"){
+    if(tipe === "sign_off"){
         table = "sign_off"
     }
+    
     let sqlQuery = `SELECT COUNT(*) FROM ${table}`;
     let totalPage = 0;
+    let length
+    try{
     db.query(sqlQuery, (err, result) => {
         if(err){
             res.status(500).send({ error: err.message });
         }else{
             totalPage = Math.ceil(result[0]['COUNT(*)']/limit);
-            
+            length = result[0]['COUNT(*)']
         }
     })
 
+    sqlQuery = "SELECT * FROM "+table+" LIMIT ? OFFSET ?";
+    db.query(sqlQuery, [limit, offset], (err, result) => {
+        if(err){
+            res.status(500).send({ error: err.message });
+        }else{
+            console.log(result)
 
-    if(tipe === 'off'){
-        sqlQuery = 'SELECT * FROM sign_off'
-    }
-    try{
-        res.status(200).send({ message: "success", });
+            const pages = Math.ceil(length / limit)
+            res.send({ code: 200, status: 'ok', data : result, pages, current: offset, length, limit, currentPage: page })
+        }
+    })
+
     }catch(err){
         res.status(500).send({ error: err.message });
     }
 })
 
+app.get("/api/users", (req, res) => {
+    const page = parseInt(req.query.page) || 0
+    const limit = parseInt(req.query.limit) || 10
+
+    const offset = page * limit
+    let sqlQuery = "SELECT COUNT(*) FROM request_register"
+    let totalPage = 0;
+    let length
+    try {
+        db.query(sqlQuery, (err, result) => {
+            if (err) {
+                res.status(500).send({ error: err.message });
+            } else {
+                totalPage = Math.ceil(result[0]['COUNT(*)'] / limit);
+                length = result[0]['COUNT(*)']
+            }
+        })
+
+    sqlQuery = "SELECT * FROM request_register LIMIT ? OFFSET ?"
+    db.query(sqlQuery, [limit, offset], (err, result) => {
+        if (err) {
+            res.status(500).send({ error: err.message });
+        } else {
+            res.send(result)
+        }
+    })  
+    }catch(err){
+        res.status(500).send({ error: err.message });
+    }
+
+})
+
+app.put("/api/kapal/:tipe/status",(req, res)=>{
+    const {id, status} = req.body;
+    const tipe = req.params.tipe;
+    let sqlQuery = `UPDATE ${tipe} SET status = ? WHERE id = ?`
+    db.query(sqlQuery, [status, id], (err, result) => {
+        if (err) {
+            res.status(500).send({ error: err.message });
+        } else {
+            res.send({message: "Berhasil update status"})
+        }
+    })
+})
 
 app.listen(port, () => {
     console.log("Server berjalan di port " + port)

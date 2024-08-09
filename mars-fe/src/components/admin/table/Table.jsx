@@ -7,219 +7,14 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import styled from 'styled-components';
+import DeleteModal from "../../modal/DeleteModal";
+import EditModal from "../../modal/EditModal";
 
-const Table = ({columns, data, pagination, setPagination, isLoading, isEmpty, rowId, setRowId, setIsOpenModalDelete, setIsOpenModalEdit}) => {
+const Table = ({columns, data, dataUsers, pagination, setPagination, isLoading, isEmpty, rowId, setRowId, setIsOpenModalDelete, setIsOpenModalEdit, isOpenModalDelete, isOpenModalEdit, tipe, handleActionSuccess}) => {
 
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [isEmpty, setIsEmpty] = useState(true);
-  // const [data, setData] = useState(null);
-  // const [isOpenModalEdit, setIsOpenModalEdit] = useState(false);
-  // const [isOpenModalDelete, setIsOpenModalDelete] = useState(false);
-  // const [rowId, setRowId] = useState(0);
-  // const { token } = useAuth();
 
-  const dataTables = useMemo(()=> data ? data.data : [], [data]);
-  // const [pagination, setPagination] = useState({
-  //   pageIndex: 0,
-  //   pageSize: 10,
-  // });
 
-// const columnHelper = createColumnHelper();
-  // columns
-// const columns = {
-//   "datang" : useMemo(()=>[
-//     columnHelper.display({
-//       header: <span className="flex justify-center text-center font-bold pl-3">No</span>,
-//       id: 'index',
-//       cell: ({row, table}) => <span className="font-bold pl-3">{(table.getSortedRowModel()?.flatRows?.findIndex((flatRow) => flatRow.id === row.id) || 0) + 1 + (pagination.pageIndex * pagination.pageSize)}</span>,
-//       size: 60+50,
-//     }),
-//     columnHelper.accessor("id", {
-//       header: "Action",
-//       id: "action",
-//       cell: ({ row }) => (
-//         <div className="flex items-center gap-2">
-//           <button className="bg-blue-500 text-white px-2 py-1 rounded"
-//             onClick={() => {setIsOpenModalEdit(true); setRowId(row.original.id)}}
-//           >
-//             Edit
-//           </button>
-//           <button className="bg-red-600 text-white px-2 py-1 rounded"
-//             onClick={()=>{setIsOpenModalDelete(true); setRowId(row.original.id)}}
-//           >
-//             Delete
-//           </button>
-//         </div>
-//       ),
-//     }),
-//     columnHelper.accessor("nama_agen_kapal", {
-//       cell: (info) => info.getValue(),
-//       header: <span className="flex justify-center text-center ">Nama Agen</span>,
-//       size: 100+50,
-//     }),
-//     columnHelper.accessor("imo_number", {
-//       cell: (info) => info.getValue(),
-//       header: <span className="flex justify-center text-center ">IMO Number</span>,
-//       size: 100+50,
-//     }),
-//     columnHelper.accessor("nama_kapal", {
-//       cell: (info) => info.getValue(),
-//       header: <span className="flex justify-center text-center ">Nama Kapal</span>,
-//       size: 100+50,
-//     }),
-//     columnHelper.accessor("pelabuhan_asal", {
-//       cell: (info) => info.getValue(),
-//       header: <span className="flex justify-center text-center ">Pelabuhan Asal</span>,
-//       size: 100+50,
-//     }),
-//     columnHelper.accessor("pelabuhan_tujuan", {
-//       cell: (info) => info.getValue(),
-//       header: <span className="flex justify-center text-center ">Pelabuhan Tujuan</span>,
-//       size: 120+50,
-//     }),
-//     columnHelper.accessor("jadwal_kedatangan", {
-//       cell: (info) => formatDate(info.getValue()),
-//       header: <span className="flex justify-center text-center ">Jadwal Kedatangan</span>,
-//       size: 200+50,
-//     }),
-//     columnHelper.accessor("tujuan_kedatangan", {
-//       cell: (info) => info.getValue(),
-//       header: <span className="flex justify-center text-center ">Tujuan Kedatangan</span>,
-//       size: 120+50,
-//     }),
-//     columnHelper.accessor("perusahaan_agen_kapal", {
-//       cell: (info) => info.getValue(),
-//       header: <span className="flex justify-center text-center ">Perusahaan Kapal</span>,
-//       size: 120+50,
-//     }),
-//     columnHelper.accessor("kebangsaan_kapal", {
-//       cell: (info) => info.getValue(),
-//       header: <span className="flex justify-center text-center ">Kebangsaan Kapal</span>,
-//       size: 120+50,
-//     }),
-//     columnHelper.accessor("service_location", {
-//       cell: (info) => info.getValue(),
-//       header: <span className="flex justify-center text-center ">Lokasi Servis</span>,
-//       size: 200+50,
-//     }),
-//     columnHelper.accessor("data_cru_indonesia", {
-//       cell: (info) => info.getValue(),
-//       header: <span className="flex justify-center text-center ">Cru Indonesia</span>,
-//       size: 100+50,
-//     }),
-//     columnHelper.accessor("data_cru_asing", {
-//       cell: (info) => info.getValue(),
-//       header: <span className="flex justify-center text-center ">Cru Asing</span>,
-//       size: 100+50,
-//     }),
-//     columnHelper.accessor("dokument", {
-//       cell: (info) => <button onClick={()=>downloadDokument(info.getValue())} className="text-blue-600">
-//       Dokumen
-//     </button >,
-//       header: <span className="flex justify-center text-center ">Dokument</span>,
-//       size: 200+50,
-//     }),
-//   ],[columnHelper, pagination, setIsOpenModalDelete, setIsOpenModalEdit, setRowId]),
-
-//   "berangkat" : useMemo(
-//     () => [
-//       columnHelper.display({
-//         header: <span className="flex justify-center text-center font-bold pl-3">No</span>,
-//         id: 'index',
-//         cell: ({row, table}) => <span className="font-bold pl-3">{(table.getSortedRowModel()?.flatRows?.findIndex((flatRow) => flatRow.id === row.id) || 0) + 1 + (pagination.pageIndex * pagination.pageSize)}</span>,
-//         size: 60+50,
-//       }),
-//       columnHelper.accessor("id", {
-//         header: "Action",
-//         id: "action",
-//         cell: ({ row }) => (
-//           <div className="flex items-center gap-2">
-//             <button className="bg-blue-500 text-white px-2 py-1 rounded"
-//               onClick={() => {setIsOpenModalEdit(true); setRowId(row.original.id)}}
-//             >
-//               Edit
-//             </button>
-//             <button className="bg-red-600 text-white px-2 py-1 rounded"
-//               onClick={()=>{setIsOpenModalDelete(true); setRowId(row.original.id)}}
-//             >
-//               Delete
-//             </button>
-//           </div>
-//         ),
-//       }),
-//       columnHelper.accessor("nama_agen_kapal", {
-//         cell: (info) => info.getValue(),
-//         header: <span className="flex justify-center text-center ">Nama Agen</span>,
-//         size: 100+50,
-//       }),
-//       columnHelper.accessor("imo_number", {
-//         cell: (info) => info.getValue(),
-//         header: <span className="flex justify-center text-center ">IMO Number</span>,
-//         size: 100+50,
-//       }),
-//       columnHelper.accessor("nama_kapal", {
-//         cell: (info) => info.getValue(),
-//         header: <span className="flex justify-center text-center ">Nama Kapal</span>,
-//         size: 100+50,
-//       }),
-//       columnHelper.accessor("pelabuhan_asal", {
-//         cell: (info) => info.getValue(),
-//         header: <span className="flex justify-center text-center ">Pelabuhan Asal</span>,
-//         size: 100+50,
-//       }),
-//       columnHelper.accessor("pelabuhan_tujuan", {
-//         cell: (info) => info.getValue(),
-//         header: <span className="flex justify-center text-center ">Pelabuhan Tujuan</span>,
-//         size: 120+50,
-//       }),
-//       columnHelper.accessor("jadwal_keberangkatan", {
-//         cell: (info) => formatDate(info.getValue()),
-//         header: <span className="flex justify-center text-center ">Jadwal Keberangkatan</span>,
-//         size: 200+50,
-//       }),
-//       columnHelper.accessor("tujuan_keberangkatan", {
-//         cell: (info) => info.getValue(),
-//         header: <span className="flex justify-center text-center ">Tujuan Keberangkatan</span>,
-//         size: 120+50,
-//       }),
-//       columnHelper.accessor("perusahaan_agen_kapal", {
-//         cell: (info) => info.getValue(),
-//         header: <span className="flex justify-center text-center ">Perusahaan Kapal</span>,
-//         size: 120+50,
-//       }),
-//       columnHelper.accessor("kebangsaan_kapal", {
-//         cell: (info) => info.getValue(),
-//         header: <span className="flex justify-center text-center ">Kebangsaan Kapal</span>,
-//         size: 120+50,
-//       }),
-//       columnHelper.accessor("service_location", {
-//         cell: (info) => info.getValue(),
-//         header: <span className="flex justify-center text-center ">Lokasi Servis</span>,
-//         size: 200+50,
-//       }),
-//       columnHelper.accessor("data_cru_indonesia", {
-//         cell: (info) => <span className="pl-5">{info.getValue()}</span>,
-//         header: <span className="flex justify-center text-center ">Cru Indonesia</span>,
-//         size: 100+50,
-//       }),
-//       columnHelper.accessor("data_cru_asing", {
-//         cell: (info) => <span className="pl-5">{info.getValue()}</span>,
-//         header: <span className="flex justify-center text-center ">Cru Asing</span>,
-//         size: 100+50,
-//       }),
-//       columnHelper.accessor("dokument", {
-//         cell: (info) => <button onClick={()=>downloadDokument(info.getValue())} className="text-blue-600">
-//         Dokumen
-//       </button >,
-//         header: <span className="flex justify-center text-center ">Dokument</span>,
-//         size: 200+50,
-//       }),
-      
-//     ],
-//     [columnHelper, pagination, setIsOpenModalDelete, setIsOpenModalEdit, setRowId])
-
-// }
-  
+  const dataTables = useMemo(()=> data ? data.data : (dataUsers ? dataUsers:[]), [data, dataUsers]);
   const PaginationWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -259,6 +54,7 @@ const PageInfo = styled.span`
 
   return (
     <div>
+      
       <div className=""  style={{
           overflow: 'auto', //our scrollable table container
           position: 'relative', //needed for sticky header
@@ -302,7 +98,7 @@ const PageInfo = styled.span`
               width: '100%',
             }}>
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className={`border-b-2 pl-3 ${index % 2 === 0 ? "bg-gray-50" : "bg-gray-100"}`}   style={{
+                <td key={cell.id} className={`border-b-2 pl-3 min-h-10 ${index % 2 === 0 ? "bg-gray-50" : "bg-gray-100"}`}   style={{
                   display: 'flex',
                   width: cell.column.getSize(),
                 }}>

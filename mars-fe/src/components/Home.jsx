@@ -70,42 +70,37 @@ const Home = () => {
             <div className="text-[#1A719C]">SERVICES</div>
           </div>
           <div className="flex justify-center text-center pt-[50px] gap-[50px]">
-            <div className="border rounded-xl px-2 py-5 shadow flex justify-center flex-col items-center max-w-[400px] hover:scale-105 transform transition">
+            <a href="/arrival" className="border rounded-xl px-2 py-5 shadow flex justify-center flex-col items-center max-w-[400px] hover:scale-105 transform transition">
               <img src={icon1} alt="Cleareance Ship" width={"100px"} />
-              <div className="text-[24px]">Clearance Ship</div>
+              <div className="text-[24px]">Ship Clearance</div>
               <div className="text-[#5C5C68] text-[14px]">
-                Streamline your vessel clearance process with our efficient
-                services
+                Membantu Proses Clearance Agar Lebih Tertata dan Maksimal
               </div>
-            </div>
-            <div className="border rounded-xl px-2 py-5 shadow flex justify-center flex-col items-center max-w-[400px] hover:scale-105 transform transition">
+            </a>
+            <a href="https://marinetraffic.com" className="border rounded-xl px-2 py-5 shadow flex justify-center flex-col items-center max-w-[400px] hover:scale-105 transform transition">
               <img src={icon2} alt="Cleareance Ship" width={"100px"} />
-              <div className="text-[24px]"> IT Support</div>
+              <div className="text-[24px]"> Marine Tracker</div>
               <div className="text-[#5C5C68] text-[14px]">
-                Immigration registration on crew or passenger that need medical
-                evacuation
+                Membantu Anda Untuk Mencari Lokasi Terkini Kapal
               </div>
-            </div>
-            <div className="border rounded-xl px-2 py-5 shadow flex justify-center flex-col items-center max-w-[400px] hover:scale-105 transform transition">
+            </a>
+            <a href="/sign-on" className="border rounded-xl px-2 py-5 shadow flex justify-center flex-col items-center max-w-[400px] hover:scale-105 transform transition">
               <img src={icon3} alt="Cleareance Ship" width={"100px"} />
               <div className="text-[24px]">Crew Change</div>
               <div className="text-[#5C5C68] text-[14px]">
-                Smooth crew changeovers to keep your operations running
-                seamlessly
+                Membantu Mengefisiensikan Layanan Pertukaran Kru Asing Kapal 
               </div>
-            </div>
+            </a>
           </div>
         </div>
         <div className="wrapper flex items-center justify-center">
           <div id="ship" className="py-[150px]">
             <div className="flex gap-[8px] justify-center text-[32px]">
-              <div className="">Ship</div>
-              <div className="text-[#1A719C]">Arrival & Departure</div>
-              <div className="">Data Form</div>
+              <div className="text-[#1A719C]">Keberangkatan dan Kedatangan</div>
             </div>
             <div className="text-[#5C5C68] text-[16px] text-center px-[100px] py-[20px]">
-              Efficiently manage ship arrivals and departures with our
-              streamlined data submission form
+            Kelola kedatangan dan keberangkatan kapal secara efisien 
+            dengan formulir pengiriman data kami yang disederhanakan
             </div>
             <div className="flex justify-center">
               <a href="/arrival">
@@ -113,20 +108,18 @@ const Home = () => {
                   type="submit"
                   className="w-[175px] h-[50px] bg-[#1A719C] rounded-[20px] text-white "
                 >
-                  Fill in your details
+                  Isi Data
                 </button>
               </a>
             </div>
           </div>
           <div id="crew" className="border-l-2">
             <div className="flex gap-[8px] justify-center text-[32px]">
-              <div className="">Crew</div>
               <div className="text-[#1A719C]">Sign-On & Sign-Off</div>
-              <div className="">Data Form</div>
             </div>
             <div className="text-[#5C5C68] text-[16px] text-center px-[100px] py-[20px]">
-              Simplify crew management with our user-friendly form for seamless
-              sign-on and sign-off processes
+            Sederhanakan manajemen kru dengan formulir kami yang mudah digunakan 
+            untuk proses masuk dan keluar yang lancar
             </div>
             <div className="flex justify-center">
               <a href="/sign-on">
@@ -149,3 +142,4 @@ const Home = () => {
 };
 
 export default Home;
+
