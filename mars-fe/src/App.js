@@ -16,10 +16,6 @@ import LoginUser from "./components/LoginUser";
 import LoginAdmin from "./components/LoginAdmin";
 import Register from "./components/Register";
 import ReqReg from "./components/ReqReg";
-import AdmCruSignOff from "./components/AdmCruSignOff";
-import AdmCruSignOn from "./components/AdmCruSignOn";
-import AdmDataKeb from "./components/AdmDataKeb";
-import AdmDataKed from "./components/AdmDataKed";
 import '../src/config/axiosConfig'
 import TestApi from "./components/testApi";
 import Profile from "./components/Profile";
@@ -49,14 +45,6 @@ function App() {
       path: "/admin/kedatangan",
       element: <TableKapal tipe="datang"/>
     },
-    {
-      path: "/admin/sign-on",
-      element: <AdmCruSignOn/>
-    },
-    {
-      path: "/admin/sign-off",
-      element: <AdmCruSignOff/>
-    }
   ]
   
 
@@ -91,21 +79,6 @@ function App() {
           <Route path="/loginuser" element={<LoginUser />} />
           <Route path="/loginadmin" element={<LoginAdmin />} />
           <Route path="/register" element={<Register />} />
-          <Route 
-            path="/request-register" 
-            element={<ProtectedRouteAdmin element={<ReqReg/>} />} />
-          <Route
-            path="/admin-cru-sign-off"
-            element={<ProtectedRouteAdmin element={<AdmCruSignOff />} />}
-          />
-          <Route
-            path="/admin-cru-sign-on"
-            element={<ProtectedRouteAdmin element={<AdmCruSignOn />} />}
-          />
-          <Route
-            path="/admin-data-keb"
-            element={<ProtectedRouteAdmin element={<AdmDataKeb />} />}
-          />
           <Route
             path="/admin/pengguna"
             element={<ProtectedRouteAdmin element={<AdminLayout element={<div>User</div>} />} />}

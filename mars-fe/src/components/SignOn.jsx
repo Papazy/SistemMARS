@@ -93,12 +93,12 @@ const SignOn = () => {
         </div>
         <div>
           <div className="text-[48px] font-bold flex pt-[50px] justify-center gap-[10px]">
-            <div>Crew</div>
+            <div>Kru</div>
             <div className="text-[#1A719C]">Sign-On</div>
-            <div>Data Form</div>
+            <div>Form Data</div>
           </div>
           <div className="flex justify-center font-bold text-[20px] text-[#5C5C68]">
-            <div className="pt-[11px]">Fill in your crew details</div>
+            <div className="pt-[11px]">Isi Data Kru Anda</div>
           </div>
         </div>
         <div className="pt-[48px] flex justify-center">
@@ -110,7 +110,7 @@ const SignOn = () => {
             >
               <div className="grid gap-[30px]">
                 <div>
-                  <div className="pl-[17px] font-bold">Nama Crew</div>
+                  <div className="pl-[17px] font-bold">Nama Kru</div>
                   <div className="pt-[11px]">
                     <input
                       type="text"
@@ -122,7 +122,7 @@ const SignOn = () => {
                   </div>
                 </div>
                 <div>
-                  <div className="pl-[17px] font-bold">Nomor Passport</div>
+                  <div className="pl-[17px] font-bold">Nomor Paspor</div>
                   <div className="pt-[11px]">
                     <input
                       type="text"
@@ -134,7 +134,7 @@ const SignOn = () => {
                   </div>
                 </div>
                 <div>
-                  <div className="pl-[17px] font-bold">Kebangsaan Crew</div>
+                  <div className="pl-[17px] font-bold">Kebangsaan Kru</div>
                   <div className="pt-[11px]">
                     <input
                       type="text"
@@ -225,7 +225,7 @@ const SignOn = () => {
                   type="submit"
                   className="w-[214px] h-[65px] bg-[#1A719C] rounded-[20px] text-white"
                 >
-                  Create Data Crew
+                  Buat Data Kru
                 </button>
               </div>
             </form>

@@ -181,7 +181,7 @@ const Dept = () => {
                   </div>
                 </div>
                 <div>
-                  <div className="font-bold pl-[17px]">Data Crew Indonesia</div>
+                  <div className="font-bold pl-[17px]">Data Kru Indonesia</div>
                   <div className="pt-[11px]">
                     <input
                       type="text"
@@ -193,7 +193,7 @@ const Dept = () => {
                   </div>
                 </div>
                 <div>
-                  <div className="font-bold pl-[17px]">Data Crew Asing</div>
+                  <div className="font-bold pl-[17px]">Data Kru Asing</div>
                   <div className="pt-[11px]">
                     <input
                       type="text"
@@ -307,7 +307,7 @@ const Dept = () => {
                   type="submit"
                   className="w-[214px] h-[65px] bg-[#1A719C] rounded-[20px] text-white"
                 >
-                  Submit Ship Data
+                  Submit Data Kapal
                 </button>
               </div>
             </form>

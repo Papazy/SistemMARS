@@ -127,7 +127,7 @@ const Home = () => {
                   type="submit"
                   className="w-[190px] h-[50px] bg-[#1A719C] rounded-[20px] text-white "
                 >
-                  Fill your crew details
+                  Isi Data
                 </button>
               </a>
             </div>

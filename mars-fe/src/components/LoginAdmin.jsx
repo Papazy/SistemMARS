@@ -16,7 +16,7 @@ const LoginAdmin = () => {
   const { loginAdmin, isAuthenticatedAdmin } = useAuth()
   console.log(isAuthenticatedAdmin)
   if(isAuthenticatedAdmin){
-    window.location.href = "/request-register"
+    window.location.href = "/admin"
     return
   }
 
