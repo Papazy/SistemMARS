@@ -24,6 +24,8 @@ import ProfileTable from "./components/ProfileTable";
 import AdminLayout from "./components/admin/AdminLayout";
 import Table from "./components/admin/table/Table";
 import TableKapal from "./components/admin/table/kapal";
+import TableKru from "./components/admin/table/kru";
+import TablePengguna from "./components/admin/table/user";
 
 function App() {
   document.title = "MARS";
@@ -31,11 +33,11 @@ function App() {
   const adminRoutes = [
     {
       path: "/admin",
-      element: <div>Visual data</div>,
+      element: <TablePengguna/>,
     },
     {
       path: "/admin/pengguna",
-      element: <div>User</div>
+      element: <TablePengguna/>
     },
     {
       path: "/admin/keberangkatan",
@@ -45,6 +47,14 @@ function App() {
       path: "/admin/kedatangan",
       element: <TableKapal tipe="datang"/>
     },
+    {
+      path: "/admin/sign-on",
+      element: <TableKru tipe="sign_on"/>
+    },
+    {
+      path: "/admin/sign-off",
+      element: <TableKru tipe="sign_off"/>
+    }
   ]
   
 
@@ -79,15 +89,9 @@ function App() {
           <Route path="/loginuser" element={<LoginUser />} />
           <Route path="/loginadmin" element={<LoginAdmin />} />
           <Route path="/register" element={<Register />} />
-          <Route
-            path="/admin/pengguna"
-            element={<ProtectedRouteAdmin element={<AdminLayout element={<div>User</div>} />} />}
-          />
-          <Route
-            path="/admin/adm"
-            element={<ProtectedRouteAdmin element={<AdminLayout element={<div>Administrasi</div>} />} />}
-          />
-
+          <Route 
+            path="/request-register" 
+            element={<ProtectedRouteAdmin element={<ReqReg/>} />} />
           <Route path="/test-api" element={<TestApi/>} />
           <Route path="/test" element={<AdminLayout/>} />
           

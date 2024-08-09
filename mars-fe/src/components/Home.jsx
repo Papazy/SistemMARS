@@ -70,27 +70,27 @@ const Home = () => {
             <div className="text-[#1A719C]">SERVICES</div>
           </div>
           <div className="flex justify-center text-center pt-[50px] gap-[50px]">
-            <div className="border rounded-xl px-2 py-5 shadow flex justify-center flex-col items-center max-w-[400px] hover:scale-105 transform transition">
+            <a href="/arrival" className="border rounded-xl px-2 py-5 shadow flex justify-center flex-col items-center max-w-[400px] hover:scale-105 transform transition">
               <img src={icon1} alt="Cleareance Ship" width={"100px"} />
               <div className="text-[24px]">Ship Clearance</div>
               <div className="text-[#5C5C68] text-[14px]">
                 Membantu Proses Clearance Agar Lebih Tertata dan Maksimal
               </div>
-            </div>
-            <div className="border rounded-xl px-2 py-5 shadow flex justify-center flex-col items-center max-w-[400px] hover:scale-105 transform transition">
+            </a>
+            <a href="https://marinetraffic.com" className="border rounded-xl px-2 py-5 shadow flex justify-center flex-col items-center max-w-[400px] hover:scale-105 transform transition">
               <img src={icon2} alt="Cleareance Ship" width={"100px"} />
               <div className="text-[24px]"> Marine Tracker</div>
               <div className="text-[#5C5C68] text-[14px]">
                 Membantu Anda Untuk Mencari Lokasi Terkini Kapal
               </div>
-            </div>
-            <div className="border rounded-xl px-2 py-5 shadow flex justify-center flex-col items-center max-w-[400px] hover:scale-105 transform transition">
+            </a>
+            <a href="/sign-on" className="border rounded-xl px-2 py-5 shadow flex justify-center flex-col items-center max-w-[400px] hover:scale-105 transform transition">
               <img src={icon3} alt="Cleareance Ship" width={"100px"} />
               <div className="text-[24px]">Crew Change</div>
               <div className="text-[#5C5C68] text-[14px]">
                 Membantu Mengefisiensikan Layanan Pertukaran Kru Asing Kapal 
               </div>
-            </div>
+            </a>
           </div>
         </div>
         <div className="wrapper flex items-center justify-center">
@@ -142,3 +142,4 @@ const Home = () => {
 };
 
 export default Home;
+

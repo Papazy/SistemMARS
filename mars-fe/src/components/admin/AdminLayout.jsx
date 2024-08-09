@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import AdminNavbar from "./AdminNavbar";
 import AdminSidebar from "./AdminSidebar";
+import DeleteModal from "../modal/DeleteModal";
+import EditModal from "../modal/EditModal";
 
 function  AdminLayout({element}) {
+
+
+
 
   const pathname = window.location.pathname;
   const [path, setPath] = useState("");
@@ -39,6 +44,8 @@ function  AdminLayout({element}) {
     <>
       <AdminSidebar active={path}/>
       <AdminNavbar />
+     
+
       <div className="pl-64 pt-20 ">
         {element}
       </div>
