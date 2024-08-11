@@ -21,6 +21,7 @@ const Profile = () => {
         <div className="min-h-screen">
             {isOpenModalDelete !== null && <DeleteModal tipe={tipe} isOpen={isOpenModalDelete} setIsOpen={setIsOpenModalDelete} rowId={rowId} onDeleteSuccess={handleActionSuccess} />}
             { isOpenModalEdit && <EditModal isOpen={isOpenModalEdit} setIsOpen={setIsOpenModalEdit} rowId={rowId} onEditSuccess={handleActionSuccess} tipe={tipe}/>}
+            
             <NavbarProfile />
             <div className="flex">
               <Sidebar active={selected} setSelected={setSelected}/>

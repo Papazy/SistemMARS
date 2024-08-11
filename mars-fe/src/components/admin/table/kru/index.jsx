@@ -11,6 +11,10 @@ import {
 import styled from 'styled-components';
 import { useAuth } from "../../../../auth/AuthContext";
 import Table from "../Table";
+import EditModalUser from "../../../modal/EditModalUser";
+import EditModalStatus from "../../../modal/EditModalStatus";
+import DeleteModalKru from "../../../modal/DeleteModalKru";
+import EditModalKru from "../../../modal/EditModalKru";
 
 const TableKru = ({tipe = "sign_on"}) => {
 
@@ -21,6 +25,10 @@ const TableKru = ({tipe = "sign_on"}) => {
   const [isOpenModalDelete, setIsOpenModalDelete] = useState(false);
   const [rowId, setRowId] = useState(0);
   const { token } = useAuth();
+  const [reloadData, setReloadData] = useState(false);
+  const handleActionSuccess = () => {
+    setReloadData(!reloadData);
+  }
 
   const [pagination, setPagination] = useState({
     pageIndex: 0,
@@ -202,7 +210,7 @@ const columns = {
       }
     };
     fetchData();
-  }, [token, pagination, tipe]);
+  }, [token, pagination, tipe, reloadData]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -210,7 +218,9 @@ const columns = {
 
   return (
     <div className="p-5 w-full flex flex-col gap-5">
-
+        {isOpenModalDelete !== null && <DeleteModalKru tipe={tipe} isOpen={isOpenModalDelete} setIsOpen={setIsOpenModalDelete} rowId={rowId} onDeleteSuccess={handleActionSuccess}/>}
+       {isOpenModalEdit && <EditModalKru tipe={tipe} isOpen={isOpenModalEdit} setIsOpen={setIsOpenModalEdit} rowId={rowId} onEditSuccess={handleActionSuccess} />}
+      
     <div className="text-lg font-bold flex justify-center items-center ">
       Data {tipe === "sign_on" ? "Sign On" : "Sign Off"} Kru
     </div>

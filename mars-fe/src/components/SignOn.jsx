@@ -46,7 +46,7 @@ const SignOn = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:3001/api/createSignOnCru",
+        "http://localhost:3001/api/user",
         {
           method: "POST",
           body: formData,

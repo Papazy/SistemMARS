@@ -6,8 +6,8 @@ import {
 } from "@tanstack/react-table";
 import { useAuth } from "../../../../auth/AuthContext";
 import Table from "../Table";
-import DeleteModal from "../../../modal/DeleteModal";
-import EditModal from "../../../modal/EditModal";
+import DeleteModalUser from "../../../modal/DeleteModalUser";
+import EditModalUser from "../../../modal/EditModalUser";
 
 const TablePengguna = () => {
 
@@ -45,11 +45,7 @@ const columns = {
       header: <span className="flex justify-center items-center text-center ">Nama</span>,
       size: 100+50,
     }),
-    columnHelper.accessor("id_agen_kapal", {
-      cell: (info) => <span className="flex w-full justify-center items-center">{info.getValue()}</span>,
-      header: <span className="flex justify-center items-center text-center ">Id Agen</span>,
-      size: 100+50,
-    }),
+
     columnHelper.accessor("nama_perusahaan", {
       cell: (info) => <span className="flex items-center ">{info.getValue()}</span>,
       header: <span className="flex justify-center items-center text-center ">Nama Perusahaan</span>,
@@ -65,7 +61,7 @@ const columns = {
       header: <span className="flex justify-center items-center text-center ">Alamat Perusahaan</span>,
       size: 200+50,
     }),
-    columnHelper.accessor("No HP", {
+    columnHelper.accessor("no_hp_agen", {
       cell: (info) => <span className="flex items-center ">{info.getValue()}</span>,
       header: <span className="flex justify-center items-center text-center ">No HP</span>,
       size: 120+50,
@@ -74,15 +70,15 @@ const columns = {
       header: <span className="flex justify-center items-center text-center w-full">Action</span>,
       size:300,
       id: "action",
-      cell: ({ row }) => (
+      cell: ( {row} ) => (
         <div className="flex gap-2 w-full justify-center items-center ">
           <button className="bg-blue-500 text-white px-2 py-1 rounded flex justify-center items-center gap-2"
-            onClick={() => {setIsOpenModalEdit(true); setRowId(row.original.id)}}
+            onClick={() => {console.log(row); setRowId(row.original.id);setIsOpenModalEdit(true); }}
           >
             <BsPencilFill /> Edit
           </button>
           <button className="bg-red-600 text-white px-2 py-1 rounded flex justify-center items-center gap-2"
-            onClick={()=>{setIsOpenModalDelete(true); setRowId(row.original.id)}}
+            onClick={()=>{setRowId(row.original.id); setIsOpenModalDelete(true); }}
           >
             <BsTrash3Fill /> Delete
           </button>
@@ -126,14 +122,17 @@ const columns = {
   }
 
   return (
-    <div className="p-5 w-full flex flex-col gap-5">
-       {isOpenModalDelete !== null && <DeleteModal isOpen={isOpenModalDelete} setIsOpen={setIsOpenModalDelete} rowId={rowId} onDeleteSuccess={handleActionSuccess}/>}
+    <div className="w-full flex flex-col gap-5">
+       {isOpenModalDelete !== null && <DeleteModalUser isOpen={isOpenModalDelete} setIsOpen={setIsOpenModalDelete} rowId={rowId} onDeleteSuccess={handleActionSuccess}/>}
        {isOpenModalEdit && <EditModalUser isOpen={isOpenModalEdit} setIsOpen={setIsOpenModalEdit} rowId={rowId} onEditSuccess={handleActionSuccess} />}
       
     <div className="text-lg font-bold flex justify-center items-center ">
       Data Pengguna
     </div>
-    <Table columns={columns["users"]} dataUsers={data} pagination={pagination} setPagination={setPagination} isLoading={isLoading} isEmpty={isEmpty} rowId={rowId} setRowId={setRowId} setIsOpenModalDelete={setIsOpenModalDelete} setIsOpenModalEdit={setIsOpenModalEdit} />
+    <div className="p-5">
+
+    <Table columns={columns["users"]} data={data} pagination={pagination} setPagination={setPagination} isLoading={isLoading} isEmpty={isEmpty} rowId={rowId} setRowId={setRowId} setIsOpenModalDelete={setIsOpenModalDelete} setIsOpenModalEdit={setIsOpenModalEdit} />
+    </div>
     </div>
   );
 };

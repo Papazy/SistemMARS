@@ -2,64 +2,75 @@ import { useAuth } from "../../auth/AuthContext";
 import { useEffect, useState } from "react";
 import { downloadDokument } from "../../config/utils";
 
-const EditModalUser = ({tipe = "datang", isOpen, setIsOpen, rowId, onEditSuccess }) => {
 
-  const [nama_agen_kapal, setNamaAgenKapal] = useState("");
-  const [perusahaan_agen_kapal, setPerusahaanAgenKapal] = useState("");
-  const [imo_number, setIMONumber] = useState("");
-  const [nama_kapal, setNamaKapal] = useState("");
-  const [kebangsaan_kapal, setKebangsaanKapal] = useState("");
-  const [data_cru_indonesia, setDataCRUIndonesia] = useState("");
-  const [data_cru_asing, setDataCRUAsing] = useState("");
-  const [pelabuhan_asal, setPelabuhanAsal] = useState("");
-  const [pelabuhan_tujuan, setPelabuhanTujuan] = useState("");
-  const [service_location, setServiceLocation] = useState("");
-  const [jadwal_kedatangan, setJadwalKedatangan] = useState("");
-  const [tujuan_kedatangan, setTujuanKedatangan] = useState("");
-  const [jadwal_keberangkatan, setJadwalKeberangkatan] = useState("");
-  const [tujuan_keberangkatan, setTujuanKeberangkatan] = useState("");
-  const [file, setFile] = useState(null);
-  const [filename, setFilename] = useState("")
-  const [date, setDate] = useState(null);
-  
+const EditModalUser = ({ tipe = "datang", isOpen, setIsOpen, rowId, onEditSuccess, data }) => {
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+    id_agen_kapal: "",
+    nama_perusahaan: "",
+    email: "",
+    no_hp_agen: "",
+    alamat_perusahaan: "",
+  });
+
+  const [isShowModal, setIsShowModal] = useState(false);
+  const [isShowModalError, setIsShowModalError] = useState(false);
+
   const { token } = useAuth();
-  
-  
-  useEffect(()=>{
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`http://localhost:3001/api/user/${rowId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setIsOpen(false);
+        setIsShowModal(true);
+        onEditSuccess();
+      } else {
+        setIsShowModalError(true);
+      }
+    } catch (error) {
+      console.error("Error registering:", error);
+      setIsShowModalError(true);
+    }
+  };
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:3001/api/kapal/${tipe}/` + rowId,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-               
-            },
-          }
-        );
+        console.log(rowId);
+        const response = await fetch(`http://localhost:3001/api/user/${rowId}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
         if (response.ok) {
           const data = await response.json();
-          console.log(data)
-          setNamaAgenKapal(data.nama_agen_kapal);
-          setPerusahaanAgenKapal(data.perusahaan_agen_kapal);
-          setIMONumber(data.imo_number);
-          setNamaKapal(data.nama_kapal);
-          setKebangsaanKapal(data.kebangsaan_kapal);
-          setDataCRUIndonesia(data.data_cru_indonesia);
-          setDataCRUAsing(data.data_cru_asing);
-          setPelabuhanAsal(data.pelabuhan_asal);
-          setPelabuhanTujuan(data.pelabuhan_tujuan);
-          setServiceLocation(data.service_location);
-          if(tipe === "berangkat"){
-            setJadwalKeberangkatan(data.jadwal_keberangkatan);
-            setTujuanKeberangkatan(data.tujuan_keberangkatan);
-          }else{
-            setJadwalKedatangan(data.jadwal_kedatangan);
-            setTujuanKedatangan(data.tujuan_kedatangan);
-          }
-          setFilename(data.dokument)
-          
+          console.log(data);
+          setFormData({
+            username: data.username,
+            password: data.password,
+            id_agen_kapal: data.id_agen_kapal,
+            nama_perusahaan: data.nama_perusahaan,
+            email: data.email,
+            no_hp_agen: data.no_hp_agen,
+            alamat_perusahaan: data.alamat_perusahaan,
+          });
         } else {
           console.log("Gagal mengambil data");
         }
@@ -68,105 +79,26 @@ const EditModalUser = ({tipe = "datang", isOpen, setIsOpen, rowId, onEditSuccess
       }
     };
     fetchData();
-  },[rowId, token, tipe])
-  
-  useEffect(()=>{
-    if(jadwal_keberangkatan !== ""){
-      setDate(new Date(jadwal_keberangkatan).toISOString().substring(0, 10))
-    }else if(jadwal_kedatangan !== ""){
-      setDate(new Date(jadwal_kedatangan).toISOString().substring(0, 10))
-    }  
-  }, [jadwal_keberangkatan, jadwal_kedatangan])
-  
-  
+  }, [rowId, token, tipe]);
+
   if (!isOpen) return null;
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    
-    if(selectedFile &&  selectedFile.type === 'application/pdf' && selectedFile.size < 10 * 1024 * 1024){
-      setFile(selectedFile);
-    }else{
-      alert('File harus berupa pdf dan ukuran file maksimal 10MB');
-    }
-    
-  }
 
-  const editRow = async (e, id) => {
-    e.preventDefault();
-    const formData = new FormData();
-
-    formData.append("dokument", file);
-
-    formData.append("nama_agen_kapal", nama_agen_kapal);
-    formData.append("perusahaan_agen_kapal", perusahaan_agen_kapal);
-    formData.append("imo_number", imo_number);
-    formData.append("nama_kapal", nama_kapal);
-    formData.append("kebangsaan_kapal", kebangsaan_kapal);
-    formData.append("data_cru_indonesia", data_cru_indonesia);
-    formData.append("data_cru_asing", data_cru_asing);
-    formData.append("pelabuhan_asal", pelabuhan_asal);
-    formData.append("pelabuhan_tujuan", pelabuhan_tujuan);
-    formData.append("service_location", service_location);
-    formData.append("jadwal_keberangkatan", jadwal_keberangkatan);
-    formData.append("tujuan_keberangkatan", tujuan_keberangkatan);
-    formData.append("jadwal_kedatangan", jadwal_kedatangan);
-    formData.append("tujuan_kedatangan", tujuan_kedatangan);
-    
-    console.log("data formdata")
-    console.log(formData.get("dokument"));
-    console.log(formData.get("nama_agen_kapal"));
-    console.log(formData.get("perusahaan_agen_kapal"));
-    console.log(formData.get("imo_number"));
-    console.log(formData.get("nama_kapal"));
-    console.log(formData.get("kebangsaan_kapal"));
-    console.log(formData.get("data_cru_indonesia"));
-    console.log(formData.get("data_cru_asing"));
-    console.log(formData.get("pelabuhan_asal"));
-
-
-    try {
-      const response = await fetch(
-        `http://localhost:3001/api/kapal/${tipe}/` + id,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-          body: formData,
-        }
-      );
-      console.log(response);
-      if (response.ok) {
-        console.log("Data berhasil diperbarui");
-        onEditSuccess();
-      } else {
-        console.log("Data gagal diperbarui");
-      }
-    } catch (err) {
-      console.log(err.message);
-    } finally {
+  const handleClickOutside = (e) => {
+    if (e.target.id === 'popup-modal') {
       setIsOpen(false);
     }
   };
-
-  const handleClickOutside =(e) => {
-    if(e.target.id ==='popup-modal'){
-      setIsOpen(false)
-    }
-  }
-
 
   return (
     <div
       id="popup-modal"
       tabIndex="-1"
       className={
-        "overflow-y-auto overflow-x-hidden z-50 justify-center items-center flex fixed bg-[rgba(0,0,0,0.2)] transition transform h-screen w-full"
+        "overflow-y overflow-x-hidden z-50 fixed justify-center items-center flex bg-[rgba(0,0,0,0.1)] transition transform h-screen w-full py-32 pr-40"
       }
       onClick={(e) => handleClickOutside(e)}
     >
-      <div className="relative p-4 w-full max-w-[100vh] max-h-full">
+      <div className="relative p-4 w-screen max-w-[100vh]">
         <div className="relative bg-[#ffffff] rounded-lg shadow px-24 py-5">
           <button
             type="button"
@@ -183,9 +115,9 @@ const EditModalUser = ({tipe = "datang", isOpen, setIsOpen, rowId, onEditSuccess
             >
               <path
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
               />
             </svg>
@@ -197,7 +129,7 @@ const EditModalUser = ({tipe = "datang", isOpen, setIsOpen, rowId, onEditSuccess
             </h3>
             <form
               className="flex justify-center items-center"
-              onSubmit={(e) => {editRow(e, rowId)}}
+              onSubmit={handleRegister}
               encType="multipart/form-data"
             >
               <div className="grid gap-[20px]">
@@ -206,9 +138,41 @@ const EditModalUser = ({tipe = "datang", isOpen, setIsOpen, rowId, onEditSuccess
                   <div className="pt-[11px]">
                     <input
                       type="text"
-                      value={nama_agen_kapal}
-                      onChange={(e) => setNamaAgenKapal(e.target.value)}
+                      name="username"
+                      value={formData.username}
+                      onChange={handleInputChange}
                       placeholder="Masukkan nama Agen Kapal"
+                      className="pl-[17px] bg-[#83B3CA] placeholder-[#5C5C68] w-[594px] h-[45px] rounded-[10px]"
+                    />
+                  </div>
+                </div>
+               
+                <div>
+                  <div className="pl-[17px] font-bold">
+                    Email
+                  </div>
+                  <div className="pt-[11px]">
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      placeholder="Masukkan Email"
+                      className="pl-[17px] bg-[#83B3CA] placeholder-[#5C5C68] w-[594px] h-[45px] rounded-[10px]"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <div className="pl-[17px] font-bold">
+                    No HP
+                  </div>
+                  <div className="pt-[11px]">
+                    <input
+                      type="text"
+                      name="no_hp_agen"
+                      value={formData.no_hp_agen}
+                      onChange={handleInputChange}
+                      placeholder="Masukkan No HP"
                       className="pl-[17px] bg-[#83B3CA] placeholder-[#5C5C68] w-[594px] h-[45px] rounded-[10px]"
                     />
                   </div>
@@ -220,179 +184,31 @@ const EditModalUser = ({tipe = "datang", isOpen, setIsOpen, rowId, onEditSuccess
                   <div className="pt-[11px]">
                     <input
                       type="text"
-                      value={perusahaan_agen_kapal}
-                      onChange={(e) => setPerusahaanAgenKapal(e.target.value)}
+                      name="nama_perusahaan"
+                      value={formData.nama_perusahaan}
+                      onChange={handleInputChange}
                       placeholder="Masukkan Perusahaan Agen Kapal"
                       className="pl-[17px] bg-[#83B3CA] placeholder-[#5C5C68] w-[594px] h-[45px] rounded-[10px]"
                     />
                   </div>
                 </div>
                 <div>
-                  <div className="pl-[17px] font-bold">IMO Number</div>
-                  <div className="pt-[11px]">
-                    <input
-                      type="text"
-                      value={imo_number}
-                      onChange={(e) => setIMONumber(e.target.value)}
-                      placeholder="Masukkan IMO Number"
-                      className="pl-[17px] bg-[#83B3CA] placeholder-[#5C5C68] w-[594px] h-[45px] rounded-[10px]"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <div className="pl-[17px] font-bold">Nama Kapal</div>
-                  <div className="pt-[11px]">
-                    <input
-                      type="text"
-                      value={nama_kapal}
-                      onChange={(e) => setNamaKapal(e.target.value)}
-                      placeholder="Masukkan Nama Kapal"
-                      className="pl-[17px] bg-[#83B3CA] placeholder-[#5C5C68] w-[594px] h-[45px] rounded-[10px]"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <div className="pl-[17px] font-bold">Kebangsaan Kapal</div>
-                  <div className="pt-[11px]">
-                    <input
-                      type="text"
-                      value={kebangsaan_kapal}
-                      onChange={(e) => setKebangsaanKapal(e.target.value)}
-                      placeholder="Masukkan Kebangsaan Kapal"
-                      className="pl-[17px] bg-[#83B3CA] placeholder-[#5C5C68] w-[594px] h-[45px] rounded-[10px]"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <div className="pl-[17px] font-bold">Data Crew Indonesia</div>
-                  <div className="pt-[11px]">
-                    <input
-                      type="text"
-                      value={data_cru_indonesia}
-                      onChange={(e) => setDataCRUIndonesia(e.target.value)}
-                      placeholder="Masukkan Data Kru Indonesia"
-                      className="pl-[17px] bg-[#83B3CA] placeholder-[#5C5C68] w-[594px] h-[45px] rounded-[10px]"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <div className="pl-[17px] font-bold">Data Crew Asing</div>
-                  <div className="pt-[11px]">
-                    <input
-                      type="text"
-                      value={data_cru_asing}
-                      onChange={(e) => setDataCRUAsing(e.target.value)}
-                      placeholder="Masukkan Data Crew Asing"
-                      className="pl-[17px] bg-[#83B3CA] placeholder-[#5C5C68] w-[594px] h-[45px] rounded-[10px]"
-                    />
-                  </div>
-                </div>
-                <div>
                   <div className="pl-[17px] font-bold">
-                    Pelabuhan Asal Kapal
+                    Alamat Perusahaan
                   </div>
                   <div className="pt-[11px]">
                     <input
                       type="text"
-                      value={pelabuhan_asal}
-                      onChange={(e) => setPelabuhanAsal(e.target.value)}
-                      placeholder="Masukkan Pelabuhan Asal Kapal"
+                      name="alamat_perusahaan"
+                      value={formData.alamat_perusahaan}
+                      onChange={handleInputChange}
+                      placeholder="alamat perusahaan"
                       className="pl-[17px] bg-[#83B3CA] placeholder-[#5C5C68] w-[594px] h-[45px] rounded-[10px]"
                     />
                   </div>
                 </div>
-                <div>
-                  <div className="pl-[17px] font-bold">
-                    Pelabuhan Tujuan Kapal
-                  </div>
-                  <div className="pt-[11px]">
-                    <input
-                      type="text"
-                      value={pelabuhan_tujuan}
-                      onChange={(e) => setPelabuhanTujuan(e.target.value)}
-                      placeholder="Masukkan Pelabuhan Tujuan Kapal"
-                      className="pl-[17px] bg-[#83B3CA] placeholder-[#5C5C68] w-[594px] h-[45px] rounded-[10px]"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <div className="pl-[17px] font-bold">Lokasi Pelayanan</div>
-                  <div className="pt-[11px] relative">
-                    <select
-                      className="pl-[17px] bg-[#83B3CA] placeholder-[#5C5C68] w-[594px] h-[45px] rounded-[10px] appearance-none"
-                      value={service_location}
-                      onChange={(e) => setServiceLocation(e.target.value)}
-                    >
-                      <option value="" disabled hidden>
-                        Masukkan Lokasi Pelayanan
-                      </option>
-                      <option value="Kantor Imigrasi Kelas II TPI Lhokseumawe">
-                        Kantor Imigrasi Kelas II TPI Lhokseumawe
-                      </option>
-                      <option value="Kantor Imigrasi Kelas II TPI Sabang">
-                        Kantor Imigrasi Kelas II TPI Sabang
-                      </option>
-                      <option value="Kantor Imigrasi Kelas I TPI Banda Aceh">
-                        Kantor Imigrasi Kelas I TPI Banda Aceh
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div>
+                {/* Tambahkan input lainnya dengan cara yang sama */}
 
-                  <div className="pl-[17px] font-bold">
-                    {tipe === "berangkat" ? "Jadwal Keberangkatan" : "Jadwal Kedatangan"}
-                  </div>
-                  <div className="pt-[11px] relative">
-                    <input
-                      type="date"
-                      defaultValue={date}
-                      placeholder="Pilih Jadwal Kedatangan Kapal"
-                      onChange={(e) => setJadwalKedatangan(e.target.value)}
-                      className="pl-[17px] pr-[20px] bg-[#83B3CA] placeholder-[#5C5C68] w-[594px] h-[45px] rounded-[10px] appearance-none"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <div className="pl-[17px] font-bold">
-                    {tipe === "berangkat" ? "Tujuan Keberangkatan" : "Tujuan Kedatangan"}
-                  </div>
-                  <div className="pt-[11px] relative">
-                    <select
-                      className="pl-[17px] bg-[#83B3CA] placeholder-[#5C5C68] w-[594px] h-[45px] rounded-[10px] appearance-none"
-                      value={tipe === "berangkat" ? tujuan_keberangkatan : tujuan_kedatangan}
-                      onChange={(e) => setTujuanKedatangan(e.target.value)}
-                    >
-                      <option value="Medical Evacuation">Medical Evacuation</option>
-                      <option value="Clearance">Clearance</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="">
-                  <div className="pl-[17px] font-bold">Upload Dokumen</div>
-                  <div className="pt-[11px]">
-                    <input
-                      type="file"
-                      onChange={(e) => handleFileChange(e)}
-                      placeholder="Silahkan Upload Dokumen"
-                      className="pl-[17px] bg-[#83B3CA] placeholder-[#5C5C68] w-[594px] h-[45px] rounded-[10px] pt-[15px]"
-                    />
-                  </div>
-                  <div className="text-md my-2">
-                      Dokumen Anda : <button className="text-blue-600 cursor-pointer" onClick={()=>{downloadDokument(filename)}}>lihat disini</button>
-                  </div>
-                  <div className="font-semibold text-sm text-red-600 mt-2 ml-2 flex flex-col items-start">
-                    &#9432; Dokumen maksimal 10mb, harap gabungkan seluruh
-                    dokumen jadi satu
-                    <ul className="flex flex-col items-start">
-                      <li>- Crew list</li>
-
-                      <li>- Last port clearance </li>
-
-                      <li>- Surat pemberitahuan </li>
-                    </ul>
-                  </div>
-                </div>
                 <button
                   type="submit"
                   className="w-[214px] h-[45px] bg-[#1A719C] rounded-[10px] text-white"
@@ -400,7 +216,6 @@ const EditModalUser = ({tipe = "datang", isOpen, setIsOpen, rowId, onEditSuccess
                   Submit Ship Data
                 </button>
               </div>
-              <div></div>
             </form>
           </div>
         </div>

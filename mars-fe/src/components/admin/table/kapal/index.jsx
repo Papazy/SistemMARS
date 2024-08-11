@@ -11,6 +11,9 @@ import {
 import styled from 'styled-components';
 import { useAuth } from "../../../../auth/AuthContext";
 import Table from "../Table";
+import EditModalStatus from "../../../modal/EditModalStatus";
+import EditModalKapal from "../../../modal/EditModalKapal";
+import DeleteModalKapal from "../../../modal/DeleteModalKapal";
 
 const TableKapal = ({tipe = "datang"}) => {
 
@@ -18,10 +21,15 @@ const TableKapal = ({tipe = "datang"}) => {
   const [isEmpty, setIsEmpty] = useState(true);
   const [data, setData] = useState(null);
   const [isOpenModalEdit, setIsOpenModalEdit] = useState(false);
+  const [isOpenModalEditStatus, setIsOpenModalEditStatus] = useState(false);
   const [isOpenModalDelete, setIsOpenModalDelete] = useState(false);
   const [rowId, setRowId] = useState(0);
   const { token } = useAuth();
-
+  const [reloadData, setReloadData] = useState(false);
+  const [tipeStatus, setTipeStatus] = useState("setuju");
+  const handleActionSuccess = () => {
+    setReloadData(!reloadData);
+  }
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
@@ -109,21 +117,29 @@ const columns = {
       header: <span className="flex justify-center items-center text-center w-full">Status</span>,
       size: 300,
       id: "status",
-      cell: ({ row }) => (
+      cell: ({ row }) => {
+        
+        if(row.original.status === "disetujui"){
+          return <span className="flex justify-center items-center w-full text-black bg-green-500/40">Disetujui</span>
+        }else if(row.original.status === "ditolak"){
+          return <span className="flex justify-center items-center w-full text-white bg-red-800/80">Ditolak</span>
+        }else{
+        return (
         <div className="flex justify-center items-center w-full gap-2">
           <button className="bg-green-500 text-white px-2 py-1 rounded w-24 flex justify-center items-center gap-1"
-            onClick={() => {setIsOpenModalEdit(true); setRowId(row.original.id)}}
+            onClick={() => {setIsOpenModalEditStatus(true); setTipeStatus("setuju") ;setRowId(row.original.id)}}
           >
               Setuju <BsCheck />
           </button>
           <button className="bg-red-800 text-white px-2 py-1 rounded w-24 flex justify-center items-center gap-1"
-            onClick={() => {setIsOpenModalEdit(true); setRowId(row.original.id)}}
+            onClick={() => {setIsOpenModalEditStatus(true); setTipeStatus("hapus"); setRowId(row.original.id)}}
           >
               Tolak <BsX />
           </button>
          
         </div>
-      ),
+        
+      )}},
     }),
     columnHelper.accessor("id", {
       header: <span className="flex justify-center items-center text-center w-full">Action</span>,
@@ -226,22 +242,29 @@ const columns = {
         header: <span className="flex justify-center items-center text-center w-full">Status</span>,
         size: 300,
         id: "status",
-        cell: ({ row }) => (
+        cell: ({ row }) => {
+          
+          if(row.original.status === "disetujui"){
+            return <span className="flex justify-center items-center w-full text-black bg-green-500/40">Disetujui</span>
+          }else if(row.original.status === "ditolak"){
+            return <span className="flex justify-center items-center w-full text-white bg-red-800/80">Ditolak</span>
+          }else{
+          return (
           <div className="flex justify-center items-center w-full gap-2">
             <button className="bg-green-500 text-white px-2 py-1 rounded w-24 flex justify-center items-center gap-1"
-              onClick={() => {setIsOpenModalEdit(true); setRowId(row.original.id)}}
+              onClick={() => {setIsOpenModalEditStatus(true); setTipeStatus("setuju") ;setRowId(row.original.id)}}
             >
                 Setuju <BsCheck />
             </button>
             <button className="bg-red-800 text-white px-2 py-1 rounded w-24 flex justify-center items-center gap-1"
-              onClick={() => {setIsOpenModalEdit(true); setRowId(row.original.id)}}
+              onClick={() => {setIsOpenModalEditStatus(true); setTipeStatus("hapus"); setRowId(row.original.id)}}
             >
                 Tolak <BsX />
             </button>
            
           </div>
-        ),
-      }),
+          
+        )}},}),
       columnHelper.accessor("id", {
         header: <span className="flex justify-center items-center text-center w-full">Action</span>,
         size:300,
@@ -293,19 +316,26 @@ const columns = {
       }
     };
     fetchData();
-  }, [token, pagination, tipe]);
+  }, [token, pagination, tipe, reloadData]);
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div className="p-5 w-full flex flex-col gap-5">
+    <div className=" w-full flex flex-col gap-5">
+
+       {isOpenModalEditStatus && <EditModalStatus isOpen={isOpenModalEditStatus} setIsOpen={setIsOpenModalEditStatus} rowId={rowId} onEditSuccess={handleActionSuccess} tipe={tipeStatus} tipeKapal={tipe}/>}
+       {isOpenModalEdit && <EditModalKapal isOpen={isOpenModalEdit} setIsOpen={setIsOpenModalEdit} rowId={rowId} onEditSuccess={handleActionSuccess} tipe={tipe}/>}
+        {isOpenModalDelete !== null && <DeleteModalKapal tipe={tipe} isOpen={isOpenModalDelete} setIsOpen={setIsOpenModalDelete} rowId={rowId} onDeleteSuccess={handleActionSuccess}/>}
 
     <div className="text-lg font-bold flex justify-center items-center ">
       Data {tipe === "datang" ? "Kedatangan" : "Keberangkatan"} Kapal
     </div>
+    <div className="p-5">
+
     <Table columns={columns[tipe]} data={data} pagination={pagination} setPagination={setPagination} isLoading={isLoading} isEmpty={isEmpty} rowId={rowId} setRowId={setRowId} setIsOpenModalDelete={setIsOpenModalDelete} setIsOpenModalEdit={setIsOpenModalEdit} />
+    </  div>
     </div>
   );
 };

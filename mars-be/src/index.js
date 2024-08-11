@@ -193,7 +193,7 @@ app.get('/api/DatangKapal', (req, res) => {
 
 
 //REad data kapaDatang
-app.get("/api/kapal/:type", verifyToken, async (req, res) => {
+app.get("/api/kapal/:type", async (req, res) => {
     try {
         console.log("masuk sini");
         let offset = 0;
@@ -281,7 +281,7 @@ app.get('/api/BerangkatKapal', (req, res) => {
 });
 
 // screate Sign In Crew
-app.post('/api/createSignOnCru', verifyToken, upload.single("dokument"), (req, res) => {
+app.post('/api/user', upload.single("dokument"), (req, res) => {
     const namaCru = req.body.nama_cru;
     const noPaspor = req.body.no_paspor;
     const kebangsaanCru = req.body.kebangsaan_cru;
@@ -296,8 +296,9 @@ app.post('/api/createSignOnCru', verifyToken, upload.single("dokument"), (req, r
 
     db.query(sqlQuery, [namaCru, noPaspor, kebangsaanCru, tglRencanaSignOn, namaKapal, kebangsananKapal, surat, waktuLapor, namaAgen], (err, result) => {
         if (err) {
-            // console.log("error")
-            // console.log(err)
+            console.log("error")
+            console.log(err)
+            res.status(500).send("Internal Server Error");
         } else {
             createNotification(3)
             res.send(result);
@@ -559,7 +560,8 @@ const getDataKapalDatangByUser = async (user, offset, limit) => {
     }
 }
 
-app.put("/api/kapal/:tipe/:id", verifyToken, upload.single("dokument"),(req, res) => {
+app.put("/api/kapal/:tipe/:id", upload.single("dokument"), (req, res) => {
+    console.log("Masuk update kapal")
     const id = req.params.id;
     const tipe = req.params.tipe;
   
@@ -590,7 +592,7 @@ app.put("/api/kapal/:tipe/:id", verifyToken, upload.single("dokument"),(req, res
         const pelabuhanAsal = req.body.pelabuhan_asal || result[0].pelabuhan_asal;
         const pelabuhanTujuan = req.body.pelabuhan_tujuan || result[0].pelabuhan_tujuan ;
         const serviceLocation = req.body.service_location || result[0].service_location;
-        const dokument = req.file ? req.file.filename : result[0].dokument;
+        const dokument = result[0].dokument;
   
         if (tipe === "datang") {
           jadwalKedatangan = req.body.jadwal_kedatangan || result[0].jadwal_kedatangan;
@@ -767,7 +769,7 @@ app.delete("/api/berangkatKapal/:id", verifyToken, (req, res) => {
     })
 })
 
-app.delete("/api/kapal/:tipe/:id", verifyToken, (req, res) => {
+app.delete("/api/kapal/:tipe/:id", (req, res) => {
     let tipe = req.params.tipe;
     if(tipe === "berangkat"){
         tipe = "keberangkatan"
@@ -798,6 +800,75 @@ app.delete("/api/kapal/:tipe/:id", verifyToken, (req, res) => {
             } else {
                 res.status(500).send({ message: "Data tidak ditemukan" })
             }
+        }
+    })
+})
+
+app.get('/api/kru/:tipe/:id', (req, res) => {
+    const id = req.params.id;
+    const tipe = req.params.tipe;
+    let sqlQuery = "SELECT * FROM sign_on WHERE id = ?"
+    if (tipe === "sign_off") {
+        sqlQuery = "SELECT * FROM sign_off WHERE id = ?"
+    }
+
+    db.query(sqlQuery, [id], (err, result) => {
+        if (err) {
+            // console.log(err)
+            res.status(500).send({ message: "Error get data" })
+        } else {
+            if (result.length > 0) {
+                res.send(result[0])
+            } else {
+                res.status(500).send({ message: "Data tidak ditemukan" })
+            }
+        }
+    })
+})
+
+app.put('/api/kru/:tipe/:id', upload.single('dokument'), (req, res) => {
+    const id = req.params.id;
+    const tipe = req.params.tipe;
+    let table = "sign_on"
+    if(tipe === "sign_off"){
+        table = "sign_off"
+    }
+    const namaCru = req.body.nama_cru;
+    const noPaspor = req.body.no_paspor;
+    const kebangsaanCru = req.body.kebangsaan_cru;
+    const tglRencanaSignOn = req.body.tg_rencana_sign_on;
+    const tglRencanaSignOff = req.body.tg_rencana_sign_off;
+    const namaKapal = req.body.nama_kapal;
+    const kebangsananKapal = req.body.kebangsaan_kapal;
+    const surat = req.body.surat;
+    const waktuLapor = req.body.waktu_lapor;
+    const namaAgen = req.body.nama_agen;
+
+    const sqlQuery = `UPDATE ${table} SET nama_cru = ?, no_paspor = ?, kebangsaan_cru = ?, tg_rencana_sign_${tipe === "sign_on" ? "on" : "off"} = ?, nama_kapal = ?, kebangsaan_kapal = ?, surat = ?, waktu_lapor = ?, nama_agen = ? WHERE id = ?`;
+
+    db.query(sqlQuery, [namaCru, noPaspor, kebangsaanCru, (tipe === "sign_on" ? tglRencanaSignOn : tglRencanaSignOff), namaKapal, kebangsananKapal, surat, waktuLapor, namaAgen, id], (err, result) => {
+        if (err) {
+            console.log(err)
+            res.status(500).send({ message: "Error update data" })
+        } else {
+            res.send({ message: "Berhasil update data" })
+        }
+    })
+})
+
+app.delete('/api/kru/:tipe/:id', (req, res) => {
+    const id = req.params.id;
+    const tipe = req.params.tipe;
+    let table = "sign_on"
+    if(tipe === "sign_off"){
+        table = "sign_off"
+    }
+    let sqlQuery = `DELETE FROM ${table} WHERE id = ?`
+    db.query(sqlQuery, [id], (err, result) => {
+        if(err){
+            res.status(500).send({ error: err.message });
+        }else{
+            res.send(result);
         }
     })
 })
@@ -887,7 +958,7 @@ app.get("/api/users", (req, res) => {
         if (err) {
             res.status(500).send({ error: err.message });
         } else {
-            res.send(result)
+            res.send({ code: 200, status: 'ok', data : result, pages:totalPage, current: offset, length, limit, currentPage: page })
         }
     })  
     }catch(err){
@@ -896,14 +967,72 @@ app.get("/api/users", (req, res) => {
 
 })
 
-app.put("/api/kapal/:tipe/status",(req, res)=>{
-    const {id, status} = req.body;
-    const tipe = req.params.tipe;
-    let sqlQuery = `UPDATE ${tipe} SET status = ? WHERE id = ?`
-    db.query(sqlQuery, [status, id], (err, result) => {
+app.get('/api/user/:id', (req, res) => {
+    const id = req.params.id;
+    let sqlQuery = "SELECT * FROM request_register WHERE id = ?"
+    db.query(sqlQuery, [id], (err, result) => {
         if (err) {
             res.status(500).send({ error: err.message });
         } else {
+            console.log(result)
+            res.send(result[0])
+        }
+    })
+})
+
+app.put('/api/user/:id', (req, res) => { 
+    const id = req.params.id;
+    const username = req.body.username;
+    const password = req.body.password;
+    const idAgenKapal = req.body.id_agen_kapal;
+    const namaPerusahaan = req.body.nama_perusahaan;
+    const email = req.body.email;
+    const noHpAgen = req.body.no_hp_agen;
+    const alamatPerusahaan = req.body.alamat_perusahaan;
+
+    const sqlQuery = "UPDATE request_register SET username = ?, password = ?, id_agen_kapal = ?, nama_perusahaan = ?, email = ?, no_hp_agen = ?, alamat_perusahaan = ? WHERE id = ?";
+
+    db.query(sqlQuery, [username, password, idAgenKapal, namaPerusahaan, email, noHpAgen, alamatPerusahaan, id], (err, result) => {
+        if (err) {
+            res.status(500).send({ error: err.message });
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+app.delete('/api/user/:id', (req, res) => {
+    const id = req.params.id;
+    let sqlQuery = "DELETE FROM request_register WHERE id = ?"
+    db.query(sqlQuery, [id], (err, result) => {
+        if (err) {
+            res.status(500).send({ error: err.message });
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+
+
+app.put("/api/kapal/:tipe/:id/status", (req, res)=>{
+    console.log("mengupdate status")
+    const {status} = req.body;
+    console.log("status");
+    console.log(status);
+    const tipe = req.params.tipe;
+    const id = req.params.id;
+    let table = "keberangkatan"
+    if(tipe === "datang"){
+        table = "kedatangan"
+    }
+    let sqlQuery = `UPDATE ${table} SET status = ? WHERE id = ?`
+    db.query(sqlQuery, [status, id], (err, result) => {
+        if (err) {
+            console.log("err", err.message)
+            res.status(500).send({ error: err.message });
+        } else {
+            console.log("Berhasil update status")
             res.send({message: "Berhasil update status"})
         }
     })
