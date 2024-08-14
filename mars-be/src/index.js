@@ -289,12 +289,11 @@ app.post('/api/user', upload.single("dokument"), (req, res) => {
     const namaKapal = req.body.nama_kapal;
     const kebangsananKapal = req.body.kebangsaan_kapal;
     const surat = req.body.surat;
-    const waktuLapor = req.body.waktu_lapor;
     const namaAgen = req.body.nama_agen;
 
-    const sqlQuery = "INSERT INTO sign_on( nama_cru, no_paspor, kebangsaan_cru, tg_rencana_sign_on, nama_kapal, kebangsaan_kapal, surat, waktu_lapor, nama_agen ) VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    const sqlQuery = "INSERT INTO sign_on( nama_cru, no_paspor, kebangsaan_cru, tg_rencana_sign_on, nama_kapal, kebangsaan_kapal, surat, nama_agen ) VALUE (?, ?, ?, ?, ?, ?, ?, ?)";
 
-    db.query(sqlQuery, [namaCru, noPaspor, kebangsaanCru, tglRencanaSignOn, namaKapal, kebangsananKapal, surat, waktuLapor, namaAgen], (err, result) => {
+    db.query(sqlQuery, [namaCru, noPaspor, kebangsaanCru, tglRencanaSignOn, namaKapal, kebangsananKapal, surat, namaAgen], (err, result) => {
         if (err) {
             console.log("error")
             console.log(err)
@@ -337,12 +336,11 @@ app.post('/api/createSignOffCru', verifyToken, upload.single("dokument"), (req, 
     const namaKapal = req.body.nama_kapal;
     const kebangsananKapal = req.body.kebangsaan_kapal;
     const surat = req.body.surat;
-    const waktuLapor = req.body.waktu_lapor;
     const namaAgen = req.body.nama_agen;
 
-    const sqlQuery = "INSERT INTO sign_off (nama_cru, no_paspor, kebangsaan_cru, tg_rencana_sign_off, nama_kapal, kebangsaan_kapal, surat, waktu_lapor, nama_agen ) VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    const sqlQuery = "INSERT INTO sign_off (nama_cru, no_paspor, kebangsaan_cru, tg_rencana_sign_off, nama_kapal, kebangsaan_kapal, surat, nama_agen ) VALUE (?, ?, ?, ?, ?, ?, ?, ?)";
 
-    db.query(sqlQuery, [namaCru, noPaspor, kebangsaanCru, tglRencanaSignOff, namaKapal, kebangsananKapal, surat, waktuLapor, namaAgen], (err, result) => {
+    db.query(sqlQuery, [namaCru, noPaspor, kebangsaanCru, tglRencanaSignOff, namaKapal, kebangsananKapal, surat, namaAgen], (err, result) => {
         if (err) {
             // console.log("error")
             // console.log(err)

@@ -10,8 +10,8 @@ const SignOff = () => {
   const [tg_rencana_sign_off, setRencanaOff] = useState("");
   const [nama_kapal, setNamaKapal] = useState("");
   const [kebangsaan_kapal, setKebangsaanKapal] = useState("");
-  const [surat, setSurat] = useState("");
-  const [waktu_lapor, setWaktuLapor] = useState("");
+  const [surat] = useState("");
+  const [waktu_lapor] = useState("");
   const [nama_agen, setNamaAgen] = useState("");
   const [file, setFile] = useState(null);
   const handleFileChange = (e) => {
@@ -39,7 +39,6 @@ const SignOff = () => {
     formData.append("kebangsaan_cru", kebangsaan_cru);
     formData.append("tg_rencana_sign_off", tg_rencana_sign_off);
     formData.append("surat", surat);
-    formData.append("waktu_lapor", waktu_lapor);
     formData.append("nama_agen", nama_agen);
     formData.append("nama_kapal", nama_kapal);
     formData.append("kebangsaan_kapal", kebangsaan_kapal);
@@ -179,18 +178,7 @@ const SignOff = () => {
                     />
                   </div>
                 </div>
-                <div>
-                  <div className="pl-[17px] font-bold">Waktu Melapor</div>
-                  <div className="pt-[11px]">
-                    <input
-                      type="date"
-                      value={waktu_lapor}
-                      placeholder="Input Waktu Melapor"
-                      onChange={(e) => setWaktuLapor(e.target.value)}
-                      className="pl-[17px] pr-[20px] bg-[#83B3CA] placeholder-[#5C5C68] w-[594px] h-[65px] rounded-[20px] appearance-none"
-                    />
-                  </div>
-                </div>
+                
                 <div>
                   <div className="pl-[17px] font-bold">Nama Agen</div>
                   <div className="pt-[11px]">

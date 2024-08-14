@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { downloadDokument, formatDate } from "../../../../config/utils";
+import { downloadDokument, formatDate, formatDateWithTime } from "../../../../config/utils";
 import { BsCheck, BsPencilFill, BsTrash3Fill, BsX } from "react-icons/bs";
 
 import {
@@ -72,9 +72,9 @@ const columns = {
       size: 120+50,
     }),
     columnHelper.accessor("waktu_lapor", {
-      cell: (info) => <span className="flex items-center">{formatDate(info.getValue())}</span>,
+      cell: (info) => <span className="flex items-center">{formatDateWithTime(info.getValue())}</span>,
       header: <span className="flex justify-center items-center text-center ">Waktu Lapor</span>,
-      size: 200+50,
+      size: 150+50,
     }),
     columnHelper.accessor("nama_agen", {
       cell: (info) => <span className="flex items-center ">{info.getValue()}</span>,
@@ -145,9 +145,9 @@ const columns = {
         size: 120+50,
       }),
       columnHelper.accessor("waktu_lapor", {
-        cell: (info) => <span className="flex items-center">{formatDate(info.getValue())}</span>,
+        cell: (info) => <span className="flex items-center">{formatDateWithTime(info.getValue())}</span>,
         header: <span className="flex justify-center items-center text-center ">Waktu Lapor</span>,
-        size: 200+50,
+        size: 150+50,
       }),
       columnHelper.accessor("nama_agen", {
         cell: (info) => <span className="flex items-center ">{info.getValue()}</span>,
