@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 05 Agu 2024 pada 13.16
+-- Waktu pembuatan: 14 Agu 2024 pada 14.18
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -41,16 +41,17 @@ CREATE TABLE `keberangkatan` (
   `service_location` varchar(255) NOT NULL,
   `jadwal_keberangkatan` date NOT NULL,
   `tujuan_keberangkatan` varchar(255) NOT NULL,
-  `dokument` varchar(255) NOT NULL
+  `dokument` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL DEFAULT 'Menunggu'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `keberangkatan`
 --
 
-INSERT INTO `keberangkatan` (`id`, `nama_agen_kapal`, `perusahaan_agen_kapal`, `imo_number`, `nama_kapal`, `kebangsaan_kapal`, `data_cru_indonesia`, `data_cru_asing`, `pelabuhan_asal`, `pelabuhan_tujuan`, `service_location`, `jadwal_keberangkatan`, `tujuan_keberangkatan`, `dokument`) VALUES
-(1, 't', 't', 't', 't', 't', 0, 0, 't', 't', 'Kantor Imigrasi Kelas II TPI Lhokseumawe', '2024-07-16', 'Medical Evacuation', 'dokument-1721075054606.pdf'),
-(2, 'tes', 'tes', 't', 't', 't', 0, 0, 't', 't', 'Kantor Imigrasi Kelas II TPI Lhokseumawe', '2024-07-29', 'Medical Evacuation', 'dokument-1722196266688.pdf');
+INSERT INTO `keberangkatan` (`id`, `nama_agen_kapal`, `perusahaan_agen_kapal`, `imo_number`, `nama_kapal`, `kebangsaan_kapal`, `data_cru_indonesia`, `data_cru_asing`, `pelabuhan_asal`, `pelabuhan_tujuan`, `service_location`, `jadwal_keberangkatan`, `tujuan_keberangkatan`, `dokument`, `status`) VALUES
+(1, 'tasd', 't', 't', 't', 't', 0, 12, 't', 't', 'Kantor Imigrasi Kelas II TPI Lhokseumawe', '2024-07-15', 'Medical Evacuation', 'dokument-1721075054606.pdf', 'disetujui'),
+(2, 'tes', 'tes', 't', 't', 't', 0, 0, 't', 't', 'Kantor Imigrasi Kelas II TPI Lhokseumawe', '2024-07-29', 'Medical Evacuation', 'dokument-1722196266688.pdf', 'ditolak');
 
 -- --------------------------------------------------------
 
@@ -72,16 +73,17 @@ CREATE TABLE `kedatangan` (
   `service_location` varchar(255) NOT NULL,
   `jadwal_kedatangan` date NOT NULL,
   `tujuan_kedatangan` varchar(255) NOT NULL,
-  `dokument` varchar(255) NOT NULL
+  `dokument` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL DEFAULT 'Menunggu'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `kedatangan`
 --
 
-INSERT INTO `kedatangan` (`id`, `nama_agen_kapal`, `perusahaan_agen_kapal`, `imo_number`, `nama_kapal`, `kebangsaan_kapal`, `data_cru_indonesia`, `data_cru_asing`, `pelabuhan_asal`, `pelabuhan_tujuan`, `service_location`, `jadwal_kedatangan`, `tujuan_kedatangan`, `dokument`) VALUES
-(41, 'Fajry Ariansyah', 'Halteks Studio', 192323, 'Titanic', 'Indonesia', 0, 0, 'Lhokseumawe', 'Banda Aceh', 'Kantor Imigrasi Kelas II TPI Lhokseumawe', '2024-12-31', 'Medical Evacuation', 'dokument-1722528845355.pdf'),
-(42, 'Fajry Ariansyah', 'Halteks Studio', 192323, 'Titanic', 'Indonesia', 0, 0, 'Lhokseumawe', 'Banda Aceh', 'Kantor Imigrasi Kelas II TPI Lhokseumawe', '2024-12-31', 'Medical Evacuation', 'dokument-1722528845355.pdf');
+INSERT INTO `kedatangan` (`id`, `nama_agen_kapal`, `perusahaan_agen_kapal`, `imo_number`, `nama_kapal`, `kebangsaan_kapal`, `data_cru_indonesia`, `data_cru_asing`, `pelabuhan_asal`, `pelabuhan_tujuan`, `service_location`, `jadwal_kedatangan`, `tujuan_kedatangan`, `dokument`, `status`) VALUES
+(41, 'Fajry Ariansyah', 'Halteks Studio', 192323, 'Titanic', 'Indonesia', 0, 0, 'Lhokseumawe', 'Banda Aceh', 'Kantor Imigrasi Kelas II TPI Lhokseumawe', '2024-12-31', 'Medical Evacuation', 'dokument-1722528845355.pdf', 'disetujui'),
+(42, 'Fajry Ariansyah', 'Halteks Studio', 192323, 'Titanic', 'Indonesia', 0, 0, 'Lhokseumawe', 'Banda Aceh', 'Kantor Imigrasi Kelas II TPI Lhokseumawe', '2024-12-31', 'Medical Evacuation', 'dokument-1722528845355.pdf', 'ditolak');
 
 -- --------------------------------------------------------
 
@@ -119,6 +121,7 @@ INSERT INTO `notifications` (`id`, `message`, `type`, `count`, `created_at`, `is
 --
 
 CREATE TABLE `request_register` (
+  `id` int(255) NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `id_agen_kapal` varchar(255) NOT NULL,
@@ -132,32 +135,28 @@ CREATE TABLE `request_register` (
 -- Dumping data untuk tabel `request_register`
 --
 
-INSERT INTO `request_register` (`username`, `password`, `id_agen_kapal`, `nama_perusahaan`, `email`, `no_hp_agen`, `alamat_perusahaan`) VALUES
-('', '', '', '', '', 0, ''),
-('abdil', '123', '123', 'Pt Tunas Bangsa', 'suksesselalubangku@gmail.com', 2147483647, 'jln. barangkali kenal, kec. ada project lagi? '),
-('abdila', '123', '12', 'ssd', 'sdfs', 29993, 'fdg'),
-('as', 'qwe', 'zdsw', 'ee', 'eew', 203, 'wew'),
-('fajry', '123', 'fajry', 'fajry', 'fajry@gmail.com', 822, 'fajry'),
-('Fajry Ariansyah', 'fajry', '12345', 'Halteks Studio', 'fajry@gmail.com', 2147483647, 'Banda Aceh'),
-('gibran', '1111111', 'GIB1', 'PT Aman', 'amansentosa@gmail.com', 88822212, 'Banda Aceh No.1'),
-('jamal1', 'password', '101525AB', 'PT. Barito ', 'barito@gmail.com', 2147483647, 'Kalimantan Selatan'),
-('te', 'tew', 'tes', 'tes', 'tes@gmail.com', 0, 'ste'),
-('tes', '123', 'tes', 'tes', 'tes@gmail.com', 812345678, 'tes'),
-('tes1', '123', 'tes', 'tes', 'tes@gmail.com', 0, 'tes'),
-('tes11', 'tes', 'tes11', 'tes', 'tes@gmail.com', 0, 'tes'),
-('tes12', 'tes', 'tes12', 'tes', 'tes@gmail.com', 0, 'tes'),
-('tes13', 'tes', 'tes13', 'tes', 'tes@gmail.com', 0, 'tes'),
-('tes14', 'tes', 'tes14', 'tes', 'tes@gmail.com', 0, 'tes'),
-('tes15', 'tes', 'tes15', 'tes', 'tes@gmail.com', 0, 'tes'),
-('tes16', 'tes', 'tes16', 'tes', 'tes@gmail.com', 0, 'tes'),
-('tes2', 'tes', 'tes2', 'tes', 'tes@gmail.com', 0, 'tes'),
-('tes3', 'tes', 'tes3', 'tes', 'tes@gmail.com', 0, 'tes'),
-('tes4', 'tes', 'tes4', 'tes', 'tes@gmail.com', 0, 'tes'),
-('tes5', 'tes', 'tes5', 'tes', 'tes@gmail.com', 0, 'tes'),
-('tes6', 'tes', 'tes6', 'tes', 'tes@gmail.com', 0, 'tes'),
-('tes7', 'tes', 'tes7', 'tes', 'tes@gmail.com', 0, 'tes'),
-('tes8', 'tes', 'tes8', 'tes', 'tes@gmail.com', 0, 'tes'),
-('tes9', 'tes', 'tes9', 'tes', 'tes@gmail.com', 0, 'tes');
+INSERT INTO `request_register` (`id`, `username`, `password`, `id_agen_kapal`, `nama_perusahaan`, `email`, `no_hp_agen`, `alamat_perusahaan`) VALUES
+(4, 'as', 'qwe', 'zdsw', 'ee', 'eew', 203, 'wew'),
+(5, 'fajry', '123', 'fajry', 'fajry', 'fajry@gmail.com', 822, 'fajry'),
+(6, 'Fajry Ariansyah', 'fajry', '12345', 'Halteks Studio', 'fajry@gmail.com', 2147483647, 'Banda Aceh'),
+(7, 'gibran', '1111111', 'GIB1', 'PT Aman', 'amansentosa@gmail.com', 88822212, 'Banda Aceh No.1'),
+(8, 'jamal1', 'password', '101525AB', 'PT. Barito ', 'barito@gmail.com', 2147483647, 'Kalimantan Selatan'),
+(9, 'te', 'tew', 'tes', 'tes', 'tes@gmail.com', 0, 'ste'),
+(10, 'tes', '123', 'tes', 'tes', 'tes@gmail.com', 812345678, 'tes'),
+(11, 'tes1', '123', 'tes', 'tes', 'tes@gmail.com', 0, 'tes'),
+(12, 'tes11', 'tes', 'tes11', 'tes', 'tes@gmail.com', 0, 'tes'),
+(13, 'tes12', 'tes', 'tes12', 'tes', 'tes@gmail.com', 0, 'tes'),
+(14, 'tes13', 'tes', 'tes13', 'tes', 'tes@gmail.com', 0, 'tes'),
+(15, 'tes14', 'tes', 'tes14', 'tes', 'tes@gmail.com', 0, 'tes'),
+(16, 'tes15', 'tes', 'tes15', 'tes', 'tes@gmail.com', 0, 'tes'),
+(17, 'tes16', 'tes', 'tes16', 'tes', 'tes@gmail.com', 0, 'tes'),
+(18, 'tes2', 'tes', 'tes2', 'tes', 'tes@gmail.com', 0, 'tes'),
+(19, 'tes3', 'tes', 'tes3', 'tes', 'tes@gmail.com', 0, 'tes'),
+(20, 'tes4', 'tes', 'tes4', 'tes', 'tes@gmail.com', 0, 'tes'),
+(21, 'tes5', 'tes', 'tes5', 'tes', 'tes@gmail.com', 0, 'tes'),
+(22, 'tes6', 'tes', 'tes6', 'tes', 'tes@gmail.com', 0, 'tes'),
+(23, 'tes7', 'tes', 'tes7', 'tes', 'tes@gmail.com', 0, 'tes'),
+(24, 'tes8', 'tes', 'tes8', 'tes', 'tes@gmail.com', 0, 'tes');
 
 -- --------------------------------------------------------
 
@@ -166,6 +165,7 @@ INSERT INTO `request_register` (`username`, `password`, `id_agen_kapal`, `nama_p
 --
 
 CREATE TABLE `sign_off` (
+  `id` int(255) NOT NULL,
   `nama_cru` varchar(255) NOT NULL,
   `no_paspor` varchar(255) NOT NULL,
   `kebangsaan_cru` varchar(255) NOT NULL,
@@ -181,9 +181,8 @@ CREATE TABLE `sign_off` (
 -- Dumping data untuk tabel `sign_off`
 --
 
-INSERT INTO `sign_off` (`nama_cru`, `no_paspor`, `kebangsaan_cru`, `tg_rencana_sign_off`, `nama_kapal`, `kebangsaan_kapal`, `surat`, `waktu_lapor`, `nama_agen`) VALUES
-('Abdillah M', '12812872', 'Indonesia', '2024-05-14', 'Donggala', 'Indonesia', 'ssssd', '2024-05-14', 'Gilang Pambua'),
-('t', 't', 't', '2024-07-07', 't', 't', '', '0000-00-00', 't');
+INSERT INTO `sign_off` (`id`, `nama_cru`, `no_paspor`, `kebangsaan_cru`, `tg_rencana_sign_off`, `nama_kapal`, `kebangsaan_kapal`, `surat`, `waktu_lapor`, `nama_agen`) VALUES
+(1, 'Abdillah Muhammad', '12812872', 'Indonesia', '2024-05-13', 'Donggala', 'Indonesia', 'ssssd', '2024-05-13', 'Gilang Pambua');
 
 -- --------------------------------------------------------
 
@@ -192,6 +191,7 @@ INSERT INTO `sign_off` (`nama_cru`, `no_paspor`, `kebangsaan_cru`, `tg_rencana_s
 --
 
 CREATE TABLE `sign_on` (
+  `id` int(255) NOT NULL,
   `nama_cru` varchar(255) NOT NULL,
   `no_paspor` varchar(255) NOT NULL,
   `kebangsaan_cru` varchar(255) NOT NULL,
@@ -202,15 +202,6 @@ CREATE TABLE `sign_on` (
   `waktu_lapor` date NOT NULL,
   `nama_agen` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data untuk tabel `sign_on`
---
-
-INSERT INTO `sign_on` (`nama_cru`, `no_paspor`, `kebangsaan_cru`, `tg_rencana_sign_on`, `nama_kapal`, `kebangsaan_kapal`, `surat`, `waktu_lapor`, `nama_agen`) VALUES
-('Abdillah Mustamin', '1234532PAgd', 'Indonesia', '2024-05-14', 'Donggala', 'Indonesia', 'asds', '2024-05-14', 'Gillang Pambua'),
-('t', 't', 't', '2024-07-07', 't', 't', '', '2024-07-07', 't'),
-('tes', 'ter', 't', '2024-07-23', 't', 't', '', '2024-01-01', 't');
 
 --
 -- Indexes for dumped tables
@@ -238,19 +229,19 @@ ALTER TABLE `notifications`
 -- Indeks untuk tabel `request_register`
 --
 ALTER TABLE `request_register`
-  ADD PRIMARY KEY (`username`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indeks untuk tabel `sign_off`
 --
 ALTER TABLE `sign_off`
-  ADD PRIMARY KEY (`no_paspor`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indeks untuk tabel `sign_on`
 --
 ALTER TABLE `sign_on`
-  ADD PRIMARY KEY (`no_paspor`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT untuk tabel yang dibuang
@@ -260,19 +251,37 @@ ALTER TABLE `sign_on`
 -- AUTO_INCREMENT untuk tabel `keberangkatan`
 --
 ALTER TABLE `keberangkatan`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `kedatangan`
 --
 ALTER TABLE `kedatangan`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT untuk tabel `notifications`
 --
 ALTER TABLE `notifications`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT untuk tabel `request_register`
+--
+ALTER TABLE `request_register`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- AUTO_INCREMENT untuk tabel `sign_off`
+--
+ALTER TABLE `sign_off`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT untuk tabel `sign_on`
+--
+ALTER TABLE `sign_on`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

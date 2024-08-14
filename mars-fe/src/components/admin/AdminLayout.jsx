@@ -3,7 +3,7 @@ import AdminNavbar from "./AdminNavbar";
 import AdminSidebar from "./AdminSidebar";
 import DeleteModal from "../modal/DeleteModal";
 import EditModal from "../modal/EditModal";
-
+import NotificationModal from "../NotificationModal";
 function  AdminLayout({element}) {
 
 
@@ -45,7 +45,7 @@ function  AdminLayout({element}) {
       <AdminSidebar active={path}/>
       <AdminNavbar />
      
-
+    <NotificationModal />
       <div className="pl-64 pt-20 ">
         {element}
       </div>
