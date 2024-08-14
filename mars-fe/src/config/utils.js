@@ -9,17 +9,29 @@ const formatDate = (isoDate) =>{
   })
 }
 
-
-const downloadDokument = async(dokumentName) => {
-  try{
+const downloadDokument = async (dokumentName) => {
+  try {
     const response = await fetch("http://localhost:3001/api/download/" + dokumentName, {
       method: "GET",
-    })
-    console.log(response)
-  }catch(err){
-    console.log(err)
-    alert(err)
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to download file');
+    }
+
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = dokumentName;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url); // Clean up after the download
+  } catch (err) {
+    console.log(err);
+    alert(err.message);
   }
-}
+};
 
 export {formatDate, downloadDokument}

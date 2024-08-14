@@ -195,7 +195,7 @@ app.get('/api/DatangKapal', (req, res) => {
 //REad data kapaDatang
 app.get("/api/kapal/:type", async (req, res) => {
     try {
-        console.log("masuk sini");
+        // console.log("masuk sini");
         let offset = 0;
         let limitData = 10;
         const { page, limit } = req.query;
@@ -498,11 +498,13 @@ app.post('/api/loginAdminMars', (req, res) => {
 
 app.get("/api/download/:filename", (req, res) => {
     const filename = req.params.filename;
+    console.log("filename", filename);
     const filepath = path.join(__dirname, "..", 'public', 'uploads', filename);
+    console.log("Downloading");
 
     res.download(filepath, (err) => {
         if (err) {
-            // console.log("error download dokument", err)
+            console.log("error download dokument", err)
             res.status(500).send("Error download dokument")
         }
     })
