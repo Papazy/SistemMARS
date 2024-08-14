@@ -1,14 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { downloadDokument, formatDate } from "../../../../config/utils";
+import { downloadDokument, formatDate, formatDateWithTime } from "../../../../config/utils";
 import { BsCheck, BsPencilFill, BsTrash3Fill, BsX } from "react-icons/bs";
 
 import {
   createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
 } from "@tanstack/react-table";
-import styled from 'styled-components';
 import { useAuth } from "../../../../auth/AuthContext";
 import Table from "../Table";
 import EditModalStatus from "../../../modal/EditModalStatus";
@@ -70,6 +66,11 @@ const columns = {
       cell: (info) => <span className="flex items-center ">{info.getValue()}</span>,
       header: <span className="flex justify-center items-center text-center ">Pelabuhan Tujuan</span>,
       size: 120+50,
+    }),
+    columnHelper.accessor("created_at", {
+      cell: (info) => <span className="flex items-center ">{formatDateWithTime(info.getValue())}</span>,
+      header: <span className="flex justify-center items-center text-center ">Waktu Registrasi</span>,
+      size: 150+50,
     }),
     columnHelper.accessor("jadwal_kedatangan", {
       cell: (info) => <span className="flex items-center">{formatDate(info.getValue())}</span>,
@@ -195,6 +196,11 @@ const columns = {
         cell: (info) => <span className="flex items-center ">{info.getValue()}</span>,
         header: <span className="flex justify-center items-center text-center ">Pelabuhan Tujuan</span>,
         size: 120+50,
+      }),
+      columnHelper.accessor("created_at", {
+        cell: (info) => <span className="flex items-center ">{formatDateWithTime(info.getValue())}</span>,
+        header: <span className="flex justify-center items-center text-center ">Waktu Registrasi</span>,
+        size: 150+50,
       }),
       columnHelper.accessor("jadwal_keberangkatan", {
         cell: (info) => <span className="flex items-center">{formatDate(info.getValue())}</span>,

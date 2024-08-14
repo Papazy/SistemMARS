@@ -8,6 +8,18 @@ const formatDate = (isoDate) =>{
     hour12: false // menggunakan format 24 jam
   })
 }
+const formatDateWithTime = (isoDate) =>{
+  const date = new Date(isoDate);
+  return date.toLocaleString('id-ID', {
+    weekday: 'long', // menampilkan hari dalam seminggu (opsional)
+    year: 'numeric',
+    month: 'long', // menampilkan nama bulan
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true // menggunakan format 24 jam
+  })
+}
 
 const downloadDokument = async (dokumentName) => {
   try {
@@ -34,4 +46,4 @@ const downloadDokument = async (dokumentName) => {
   }
 };
 
-export {formatDate, downloadDokument}
+export {formatDate, formatDateWithTime, downloadDokument}
