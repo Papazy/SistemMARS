@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 14 Agu 2024 pada 16.01
+-- Waktu pembuatan: 14 Agu 2024 pada 16.16
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -119,7 +119,7 @@ CREATE TABLE `sign_off` (
   `nama_kapal` varchar(255) NOT NULL,
   `kebangsaan_kapal` varchar(255) NOT NULL,
   `surat` varchar(255) NOT NULL,
-  `waktu_lapor` date NOT NULL,
+  `waktu_lapor` timestamp NOT NULL DEFAULT current_timestamp(),
   `nama_agen` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -138,7 +138,7 @@ CREATE TABLE `sign_on` (
   `nama_kapal` varchar(255) NOT NULL,
   `kebangsaan_kapal` varchar(255) NOT NULL,
   `surat` varchar(255) NOT NULL,
-  `waktu_lapor` date NOT NULL,
+  `waktu_lapor` timestamp NOT NULL DEFAULT current_timestamp(),
   `nama_agen` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
